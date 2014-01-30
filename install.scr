@@ -45,15 +45,15 @@ else
 	#exit 1
 #else
 	#fi
-	
-echo "####################################################################"	
-echo "## Here we go starting with an apt-get update and apt-get upgrade ##"
-echo "####################################################################"
-sleep 3
+#want this to be optional	
+#echo "####################################################################"	
+#echo "## Here we go starting with an apt-get update and apt-get upgrade ##"
+#echo "####################################################################"
+#sleep 3
 apt-get update
-echo "upgrading"
-sleep 2
-apt-get upgrade -y
+#echo "upgrading"
+#sleep 2
+#apt-get upgrade -y
 
 echo "####################"
 echo "## installing ufw ##"
@@ -246,7 +246,7 @@ mkdir /home/backups/headphones
 mkdir /home/backups/lazylibrarian
 mkdir /home/backups/sabnzbd
 chown $username /home/*/*/
-chmod 777 $username /home/*/*/
+chmod 777  /home/*/*
 
 echo "######################"
 echo "# installing sabnzbd #"
