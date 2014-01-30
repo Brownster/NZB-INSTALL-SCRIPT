@@ -1,10 +1,11 @@
 NZB-INSTALL-SCRIPT
 ==================
-
+NOT FULLY FUNCTIONAL
 Install Script for a clean kvm vps install of ubuntu 12.04 Sabnzb, Headphones, Sickbeard, Couchpotato, LazyLibrarian, Fail2ban setup for ssh
 curlftps for mount points back to your local media
 UFW for easy firewall config
-and other steps to secure your vps
+squidproxy  for anonymous web browsing proxy server useful in the uk
+and other steps to secure your vps like changing ssh port
 
 This script attempts to install all necessary components and set them up from the information given in settings.conf.
 
