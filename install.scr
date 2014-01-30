@@ -98,7 +98,7 @@ sleep 2
 /etc/init.d/ssh restart -y
 echo "enabling firewall"
 sleep 2
-ufw enable 
+ufw enable -y
 
 echo "##########################"
 echo "## secure shared memory ##"
