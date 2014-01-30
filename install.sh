@@ -258,17 +258,21 @@ sleep 2
 mv /etc/default/sabnzbdplus /home/backups/sabnzbd/sabnzbdplus.orig
 echo "change sab config"
 sleep 2
-echo "USER=$username" > /etc/default/sabnzbdplus
-echo "CONFIG=" >> /etc/default/sabnzbdplus
-echo "HOST=$HOSTIP" >> /etc/default/sabnzbdplus
-echo "PORT=$HOSTPORT" >> /etc/default/sabnzbdplus
+
+cat > /etc/default/sabnzbdplus << EOF
+USER=$username
+CONFIG=
+HOST=$HOSTIP
+PORT=$HOSTPORT
+EOF
+
 chmod +x /etc/init.d/sabnzbdplus
 echo "starting sabnzbplus"
 /etc/init.d/sabnzbdplus start
 echo "sabnzbdplus is now running on $HOSTIP:$SABPORT"
 
 echo "########################"
-echo "# installing sickbeard #"
+echo "# installing sickbeard "
 echo "########################"
 mkdir /home/$username/temp
 cd /home/$username/temp
@@ -280,29 +284,31 @@ cp sickbeard /home/backups/sickbeard
 mv sickbeard /home/$username/.sickbeard
 #cp /home/$username/.sickbeard/config.ini /etc/default/sickbeard
 cp /home/$username/.sickbeard/init.ubuntu /etc/init.d/sickbeard
-touch /etc/init.d/sickbeard
-echo "#Optional -- Unneeded unless you have added a user name and password to Sick Beard." > /etc/init.d/sickbeard
-echo "SBUSR="$WEBUSER" #Set Sick Beard user name (if you use one) here." >> /etc/init.d/sickbeard
-echo "SBPWD="$WEBPASS" #Set Sick Beard password (if you use one) here." >> /etc/init.d/sickbeard
-echo "#Script -- No changes needed below." >> /etc/init.d/sickbeard
-echo "case "$1" in" >> /etc/init.d/sickbeard
-echo "start)" >> /etc/init.d/sickbeard
-echo "#Start Sick Beard and send all messages to /dev/null." >> /etc/init.d/sickbeard
-echo "cd /home/$USER/.sickbeard" >> /etc/init.d/sickbeard
-echo "echo "Starting Sick Beard"" >> /etc/init.d/sickbeard
-echo "sudo -u $USER -EH nohup python /home/$USER/.sickbeard/SickBeard.py -q &gt; /dev/null 2&gt;&amp;1 &amp;" >> /etc/init.d/sickbeard
-echo ";;" >> /etc/init.d/sickbeard
-echo "stop)" >> /etc/init.d/sickbeard
-echo "#Shutdown Sick Beard and delete the index.html files that wget generates." >> /etc/init.d/sickbeard
-echo "echo "Stopping Sick Beard"" >> /etc/init.d/sickbeard
-echo "wget -q --user=$SBUSR --password=$SBPWD "http://$HOST:$PORT/home/shutdown/" --delete-after" >> /etc/init.d/sickbeard
-echo "sleep 6s" >> /etc/init.d/sickbeard
-echo ";;" >> /etc/init.d/sickbeard
-echo "*)" >> /etc/init.d/sickbeard
-echo "echo "Usage: $0 {start|stop}"" >> /etc/init.d/sickbeard
-echo "exit 1" >> /etc/init.d/sickbeard
-echo "esac" >> /etc/init.d/sickbeard
-echo "exit 0" >> /etc/init.d/sickbeard
+cat > /etc/init.d/sickbeard << EOF
+#Optional -- Unneeded unless you have added a user name and password to Sick Beard
+SBUSR="$WEBUSER" #Set Sick Beard user name (if you use one) here." >> /etc/init.d/sickbeard
+SBPWD="$WEBPASS" #Set Sick Beard password (if you use one) here." >> /etc/init.d/sickbeard
+#Script -- No changes needed below." >> /etc/init.d/sickbeard
+case "$1" in"
+echo "start)"
+#Start Sick Beard and send all messages to /dev/null.
+cd /home/$USER/.sickbeard" >> /etc/init.d/sickbeard
+echo "Starting Sick Beard"" >> /etc/init.d/sickbeard
+sudo -u $USER -EH nohup python /home/$USER/.sickbeard/SickBeard.py -q &gt; /dev/null 2&gt;&amp;1 &amp;" >> /etc/init.d/sickbeard
+;;
+stop)
+#Shutdown Sick Beard and delete the index.html files that wget generates.
+echo "Stopping Sick Beard"" >> /etc/init.d/sickbeard
+wget -q --user=$SBUSR --password=$SBPWD "http://$HOST:$PORT/home/shutdown/" --delete-after
+sleep 6s
+;;
+*)
+echo "Usage: $0 {start|stop}"
+exit 1
+esac
+exit 0
+EOF
+
 chmod +x /etc/init.d/sickbeard
 sudo update-rc.d sickbeard defaults
 sudo /etc/init.d/sickbeard stop
