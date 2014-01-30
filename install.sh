@@ -122,6 +122,7 @@ echo "##########################"
 echo "# IP Spoofing protetcion #"
 echo "##########################"
 sleep 3
+
 cat > /etc/sysctl.conf << EOF
 net.ipv4.conf.all.rp_filter = 1
 net.ipv4.conf.default.rp_filter = 1
@@ -174,39 +175,43 @@ echo "#installing squid proxy server#"
 echo "###############################"
 sleep 3
 sudo apt-get install -y squid3 squid3-common
-echo "http_port $SQUIDPORT" >> /etc/squid3/squid.conf
-echo "via off" >> /etc/squid3/squid.conf
-echo "forwarded_for off" >> /etc/squid3/squid.conf
-echo "request_header_access Allow allow all" >> /etc/squid3/squid.conf
-echo "request_header_access Authorization allow all" >> /etc/squid3/squid.conf 
-echo "request_header_access WWW-Authenticate allow all" >> /etc/squid3/squid.conf 
-echo "request_header_access Proxy-Authorization allow all" >> /etc/squid3/squid.conf 
-echo "request_header_access Proxy-Authenticate allow all" >> /etc/squid3/squid.conf 
-echo "request_header_access Cache-Control allow all" >> /etc/squid3/squid.conf 
-echo "request_header_access Content-Encoding allow all" >> /etc/squid3/squid.conf 
-echo "request_header_access Content-Length allow all" >> /etc/squid3/squid.conf 
-echo "request_header_access Content-Type allow all" >> /etc/squid3/squid.conf 
-echo "request_header_access Date allow all" >> /etc/squid3/squid.conf 
-echo "request_header_access Expires allow all" >> /etc/squid3/squid.conf 
-echo "request_header_access Host allow all" >> /etc/squid3/squid.conf 
-echo "request_header_access If-Modified-Since allow all" >> /etc/squid3/squid.conf 
-echo "request_header_access Last-Modified allow all" >> /etc/squid3/squid.conf 
-echo "request_header_access Location allow all" >> /etc/squid3/squid.conf 
-echo "request_header_access Pragma allow all" >> /etc/squid3/squid.conf 
-echo "request_header_access Accept allow all" >> /etc/squid3/squid.conf 
-echo "request_header_access Accept-Charset allow all" >> /etc/squid3/squid.conf 
-echo "request_header_access Accept-Encoding allow all" >> /etc/squid3/squid.conf 
-echo "request_header_access Accept-Language allow all" >> /etc/squid3/squid.conf 
-echo "request_header_access Content-Language allow all" >> /etc/squid3/squid.conf 
-echo "request_header_access Mime-Version allow all" >> /etc/squid3/squid.conf 
-echo "request_header_access Retry-After allow all" >> /etc/squid3/squid.conf 
-echo "request_header_access Title allow all" >> /etc/squid3/squid.conf 
-echo "request_header_access Connetcion allow all" >> /etc/squid3/squid.conf 
-echo "request_header_access Proxy-Connetcion allow all" >> /etc/squid3/squid.conf 
-echo "request_header_access User-Agent allow all" >> /etc/squid3/squid.conf 
-echo "request_header_access Cookie allow all" >> /etc/squid3/squid.conf 
-echo "request_header_access All deny all" >> /etc/squid3/squid.conf
-echo "http_access allow ncsa_auth" >> /etc/squid3/squid.conf
+
+cat > /etc/squid3/squid.conf << EOF
+http_port $SQUIDPORT
+via off
+forwarded_for off
+request_header_access Allow allow all
+request_header_access Authorization allow all 
+request_header_access WWW-Authenticate allow all 
+request_header_access Proxy-Authorization allow all 
+request_header_access Proxy-Authenticate allow all 
+request_header_access Cache-Control allow all 
+request_header_access Content-Encoding allow all 
+request_header_access Content-Length allow all 
+request_header_access Content-Type allow all 
+request_header_access Date allow all 
+request_header_access Expires allow all 
+request_header_access Host allow all 
+request_header_access If-Modified-Since allow all
+request_header_access Last-Modified allow all 
+request_header_access Location allow all 
+request_header_access Pragma allow all 
+request_header_access Accept allow all 
+request_header_access Accept-Charset allow all 
+request_header_access Accept-Encoding allow all 
+request_header_access Accept-Language allow all 
+request_header_access Content-Language allow all 
+request_header_access Mime-Version allow all 
+request_header_access Retry-After allow all 
+request_header_access Title allow all 
+request_header_access Connetcion allow all 
+request_header_access Proxy-Connetcion allow all 
+request_header_access User-Agent allow all 
+request_header_access Cookie allow all 
+request_header_access All deny all
+http_access allow ncsa_auth
+EOF
+
 sudo apt-get install apache2-utils
 sudo echo "" >> /etc/squid3/squid_passwd
 sudo touch /etc/squid3/squid_passwd
@@ -255,7 +260,7 @@ echo "# installing sabnzbd #"
 echo "######################
 sleep 3
 sudo apt-get install -y sabnzbdplus
-echo "making a copy in home dir"
+echo "making a copy /home/ dir"
 sleep 2
 mv /etc/default/sabnzbdplus /home/backups/sabnzbd/sabnzbdplus.orig
 echo "change sab config"
@@ -286,6 +291,7 @@ cp sickbeard /home/backups/sickbeard
 mv sickbeard /home/$username/.sickbeard
 #cp /home/$username/.sickbeard/config.ini /etc/default/sickbeard
 cp /home/$username/.sickbeard/init.ubuntu /etc/init.d/sickbeard
+
 cat > /etc/init.d/sickbeard << EOF
 #Optional -- Unneeded unless you have added a user name and password to Sick Beard
 SBUSR="$WEBUSER" #Set Sick Beard user name (if you use one) here." >> /etc/init.d/sickbeard
@@ -535,16 +541,19 @@ cd /home/$username/temp
 git clone https://github.com/Conjuro/LazyLibrarian.git lazylibrarian 
 cp /home/$username/temp/lazylibrarian /home/backups/lazylibrarian/
 mv /home/$username/temp/lazylibrarian  /home/$username/.lazylibrarian 
-cp /home/$username/.lazylibrarian/init/ubuntu.initd /etc/init.d/lazylibrarian 
-#cp /home/$username/.lazylibrarian/init/ubuntu.default /etc/default/lazylibrarian
-echo "APP_PATH=/home/castro/.lazylibrarian" > /etc/default/lazylibrarian
-echo "ENABLE_DAEMON=1" >> /etc/default/lazylibrarian
-echo "RUN_AS=$user" >> /etc/default/lazylibrarian
-echo "WEBUPDATE=0" >> /etc/default/lazylibrarian
-echo "CONFIG=/home/$username/.lazylibrarian/" >> /etc/default/lazylibrarian
-echo "DATADIR=/home/$username/.lazylibrarian/" >> /etc/default/lazylibrarian
-echo "PORT=$BOOKPORT" >> /etc/default/lazylibrarian
-echo "PID_FILE=/home/$username/.lazylibrarian/lazylibrarian.pid" >> /etc/default/lazylibrarian
+cp /home/$username/.lazylibrarian/init/ubuntu.initd /etc/init.d/lazylibrarian
+
+cat > /etc/default/lazylibrarian <<EOF
+APP_PATH=/home/castro/.lazylibrarian
+ENABLE_DAEMON=1
+RUN_AS=$user
+WEBUPDATE=0
+CONFIG=/home/$username/.lazylibrarian/
+DATADIR=/home/$username/.lazylibrarian/
+PORT=$BOOKPORT
+PID_FILE=/home/$username/.pid/lazylibrarian.pid
+EOF
+
 chown $username /home/$username/.lazylibrarian
 chmod 777 /home/$username/.lazylibrarian
 chmod +x /etc/init.d/lazylibrarian  
@@ -581,7 +590,11 @@ echo vm.swappiness = 0 | sudo tee -a /etc/sysctl.conf
 echo "mounting ftp locations"
 sleep 2
 sudo mount -a
-echo "Thats it i am done lets check how well we did Adios"
+echo "Thats it i am done lets check how well we did we will reboot"
+echo "then go to your web browser and see if you van get to the web apps"
+echo " also try adding you vps ip and proxy port into you web browser proxy" 
+echo "settings then go to whatismyip you ip address should show as that of your"
+echo "proxy..enjoy hopefully ;-)
 sleep 10
-sudo ufw deny 22
-fi
+ufw deny 22
+shutdown -r now
