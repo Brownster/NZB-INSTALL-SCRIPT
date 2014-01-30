@@ -1,6 +1,6 @@
 #! /bin/bash
 #by marc brown - use at your own risk
-source /home/marc/settings.conf
+source /tmp/settings.conf
 echo "******************************************************************************************"
 echo "******************************************************************************************"
 echo "******************************************************************************************"
@@ -12,8 +12,8 @@ echo "*************kidstv,kidsfilms,dadstv,dadsfilms,music books and 1gig swap f
 echo "*************ubuntu 12.04 server this was written and tested on a ramnode vps ************"
 echo "*************installed with 12.04 server minimal on a kvm virtual machine     ************"
 echo "*************vm matters if you want fuse to work out of the box - curlftpfs   ************"
-echo "*************MAKE SURE YOU HAVE FILLED IN settings.conf and placed in same    ************"
-echo "*************folder as the script                                             ************"
+echo "*************MAKE SURE YOU HAVE FILLED IN settings.conf place everything      ************"
+echo "************* in the /tmp/ folder                                             ************"
 echo "******************************************************************************************"
 echo "******************************************************************************************"
 echo "******************************************************************************************"
