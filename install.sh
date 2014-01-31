@@ -192,6 +192,7 @@ echo "adding admin group"
 sleep 2
 groupadd admin
 usermod -a -G admin $username
+echo "protect su by limiting access to admin group only"
 dpkg-statoverride --update --add $username admin 4750 /bin/su
 
 echo "############################################"
@@ -201,9 +202,9 @@ sleep 3
 usermod -a -G sudo $username
 usermod -a -G fuse $username
 
-echo "##########################"
-echo "# IP Spoofing protetcion #"
-echo "##########################"
+echo "##############################"
+echo "# Harden Network with sysctl #"
+echo "##############################"
 sleep 3
 
 cat > /etc/sysctl.conf << EOF
