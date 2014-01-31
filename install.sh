@@ -316,9 +316,6 @@ echo "########################"
 sleep 2
 mkdir /home/$username/.pid/
 mkdir /home/$username/temp
-mkdir /home/$username/.couchpotato
-mkdir /home/$username/.headphones
-mkdir /home/$username/.lazylibrarian
 mkdir /home/downloads
 mkdir /home/downloads/completed
 mkdir /home/downloads/completed/tv
@@ -360,7 +357,7 @@ cat > /etc/default/sabnzbdplus << EOF
 USER=$username
 CONFIG=
 HOST=$HOSTIP
-PORT=$HOSTPORT
+PORT=$SABPORT
 EOF
 
 chmod +x /etc/init.d/sabnzbdplus
@@ -371,9 +368,7 @@ echo "sabnzbdplus is now running on $HOSTIP:$SABPORT"
 echo "########################"
 echo "# installing sickbeard "
 echo "########################"
-mkdir /home/$username/temp
 cd /home/$username/temp
-apt-get install -y git
 git clone https://github.com/midgetspy/Sick-Beard.git sickbeard
 echo "backing up sickbeard"
 sleep 2
