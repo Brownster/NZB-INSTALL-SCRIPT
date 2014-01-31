@@ -1,6 +1,88 @@
 #! /bin/bash
 #by marc brown - use at your own risk
-source /tmp/settings.conf
+######################SETTINGS to be filled in####################################################
+
+#MUST CHANGE THESE SETTINGS
+
+#DYNDNS / noip host name that resolves into your vps ip address
+DYNDNS=someplace.dydns-remote.com
+
+#Please enter a user name for accessing all the web apps
+WEBUSER=webuser
+
+#Please enter a password for accessing all the web apps
+WEBPASS=webpass
+
+#Please enter a Username for Squid Proxy Server
+SQUIDUSER=squid
+
+#Please enter a password for Squid Proxy Server
+SQUIDPASS=hideme
+
+#squid Proxy please enter the port for web access
+SQUIDPORT=7629
+
+#SSH please enter the port for access
+SSHPORT=2022
+
+#FTP server address eith ip address if you have static address or 
+#dyn dns / no ip account resolving to your home ip if you are dynamic
+FTPHOST=somewhere.dyndns-remote.com
+
+#ftp user
+FTPUSER=ftpuser
+
+#ftp password
+FTPPASS=ftppass
+
+#film ftp location - relative to ftp home directory
+FILMFTPDIR=films
+
+#TV ftp location
+TVFTPDIR=tvseries
+
+#Music ftp location
+MUSICFTPDIR=music
+
+#Books ftp location
+BOOKSFTPDIR=ebooks
+
+#films mount location
+FILMMNTDIR=/home/media/films
+
+#tv series mount location
+TVMNTDIR=/home/media/tv
+
+#music mount location
+MUSICMNTDIR=/home/media/music
+
+#books mount location
+BOOKSMNTDIR=/home/media/books
+
+
+#OPTIONAL TO CHANGE BELOW BUT RECOMMENDED
+
+#SABNZB Please enter the port for web access
+SABPORT=7960
+
+#SICKBEARD Please enter the port for web access
+SICKPORT=7961
+
+#COUCHPOTATO Please enter the port for web access
+COUCHPORT=7962
+
+#Headphones Please enter the port for web access
+HEADPORT=7963
+
+#Lazy Librarian Please enter the port for web access
+BOOKPORT=7964
+
+##############################################################################################
+##############DONT change anything beyond this point##########################################
+##############################################################################################
+
+################################start of script###############################################
+
 echo "******************************************************************************************"
 echo "******************************************************************************************"
 echo "******************************************************************************************"
