@@ -174,7 +174,7 @@ sudo ufw allow $SQUIDPORT
 echo "editing sshd config"
 sed -i "s/port 22/port $sshport/" /etc/ssh/sshd_config
 sed -i "s/protocol 3,2/protocol 2/" /etc/ssh/sshd_config
-sed -i "s/PermitRootLogin yes/PermitRootLogin no/" /etc/ssh/sshd_config
+#sed -i "s/PermitRootLogin yes/PermitRootLogin no/" /etc/ssh/sshd_config
 sed -i "s/DebianBanner yes/DebianBanner no/" /etc/ssh/sshd_config
 echo "restarting ssh"
 sleep 2
