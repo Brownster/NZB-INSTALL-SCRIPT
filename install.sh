@@ -315,6 +315,8 @@ echo "# creating Diretcories #"
 echo "########################"
 sleep 2
 mkdir /home/$username/.pid/
+mkdir /home/$username/temp
+mkdir /home/$username/.couchpotato
 mkdir /home/downloads
 mkdir /home/downloads/completed
 mkdir /home/downloads/completed/tv
