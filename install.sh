@@ -295,7 +295,7 @@ request_header_access All deny all
 http_access allow ncsa_auth
 EOF
 
-sudo apt-get install apache2-utils
+sudo apt-get install apache2-utils -y
 sudo echo "" >> /etc/squid3/squid_passwd
 sudo touch /etc/squid3/squid_passwd
 sudo chmod 777 /etc/squid3/squid_passwd
@@ -373,23 +373,52 @@ sleep 2
 cp sickbeard /home/backups/sickbeard
 mv sickbeard /home/$username/.sickbeard
 #cp /home/$username/.sickbeard/config.ini /etc/default/sickbeard
-cp /home/$username/.sickbeard/init.ubuntu /etc/init.d/sickbeard
+#cp /home/$username/.sickbeard/init.ubuntu /etc/init.d/sickbeard
 
 cat > /etc/init.d/sickbeard << EOF
-#Optional -- Unneeded unless you have added a user name and password to Sick Beard
-SBUSR="$WEBUSER" #Set Sick Beard user name (if you use one) here." >> /etc/init.d/sickbeard
-SBPWD="$WEBPASS" #Set Sick Beard password (if you use one) here." >> /etc/init.d/sickbeard
-#Script -- No changes needed below." >> /etc/init.d/sickbeard
-case "$1" in"
-echo "start)"
+#! /bin/sh
+# Author: daemox
+# Basis: Parts of the script based on and inspired by work from
+# tret (sabnzbd.org), beckstown (xbmc.org),
+# and midgetspy (sickbeard.com).
+# Fixes: Alek (ainer.org), James (ainer.org), Tophicles (ainer.org),
+# croontje (sickbeard.com)
+# Contact: http://www.ainer.org
+# Version: 3.1
+### BEGIN INIT INFO
+# Provides: sickbeard
+# Required-Start: $local_fs $network $remote_fs
+# Required-Stop: $local_fs $network $remote_fs
+# Should-Start: $NetworkManager
+# Should-Stop: $NetworkManager
+# Default-Start: 2 3 4 5
+# Default-Stop: 0 1 6
+# Short-Description: starts and stops sick beard
+# Description: Sick Beard is an Usenet PVR. For more information see:
+# http://www.sickbeard.com
+### END INIT INFO
+#Required -- Must Be Changed!
+USER="$username" #Set Linux Mint, Ubuntu, or Debian user name here.
+
+#Required -- Defaults Provided (only change if you know you need to).
+HOST="$HOSTIP" #Set Sick Beard address here.
+PORT="$SICKPORT" #Set Sick Beard port here.
+
+#Optional -- Unneeded unless you have added a user name and password to Sick Beard.
+SBUSR="$WEBUSER" #Set Sick Beard user name (if you use one) here.
+SBPWD="$WEBPASS" #Set Sick Beard password (if you use one) here.
+
+#Script -- No changes needed below.
+case "$1" in
+start)
 #Start Sick Beard and send all messages to /dev/null.
-cd /home/$USER/.sickbeard" >> /etc/init.d/sickbeard
-echo "Starting Sick Beard"" >> /etc/init.d/sickbeard
-sudo -u $USER -EH nohup python /home/$USER/.sickbeard/SickBeard.py -q &gt; /dev/null 2&gt;&amp;1 &amp;" >> /etc/init.d/sickbeard
+cd /home/$USER/.sickbeard
+echo "Starting Sick Beard"
+sudo -u $USER -EH nohup python /home/$USER/.sickbeard/SickBeard.py -q &gt; /dev/null 2&gt;&amp;1 &amp;
 ;;
 stop)
 #Shutdown Sick Beard and delete the index.html files that wget generates.
-echo "Stopping Sick Beard"" >> /etc/init.d/sickbeard
+echo "Stopping Sick Beard"
 wget -q --user=$SBUSR --password=$SBPWD "http://$HOST:$PORT/home/shutdown/" --delete-after
 sleep 6s
 ;;
@@ -415,11 +444,17 @@ git clone https://github.com/RuudBurger/CouchPotatoServer.git couchpotato
 cp couchpotato /home/$username/backups/couchpotato
 mv couchpotato /home/$username/.couchpotato
 cp /home/$username/.couchpotato/init/ubuntu /etc/init.d/couchpotato
-touch /etc/default/couchpotato
-echo "CP_HOME=/home/$username/.couchpotato" > /etc/default/couchpotato
-echo "CP_USER=$username" >> /etc/default/couchpotato
-echo "CP_DATA=/home/$username/.config/couchpotato >> /etc/default/couchpotato
-echo "CP_PIDFILE=/home/$username/.pid/couchpotato.pid >> /etc/default/couchpotato
+
+cat > /etc/default/couchpotato <<EOF
+# COPY THIS FILE TO /etc/default/couchpotato 
+# OPTIONS: CP_HOME, CP_USER, CP_DATA, CP_PIDFILE, PYTHON_BIN, CP_OPTS, SSD_OPTS
+
+CP_HOME=/home/$username/.couchpotato
+CP_USER=$username
+CP_DATA=/home/$username/.config/couchpotato
+CP_PIDFILE=/home/$username/.pid/couchpotato.pid
+EOF
+
 chmod +x /etc/init.d/couchpotato
 sudo update-rc.d couchpotato defaults
 echo "starting couchpotato"
@@ -440,171 +475,184 @@ touch /home/$username/.headphones/config.ini
 chown $username /home/$username/.headphones/*
 chown $username /home/$username/.headphones/*/*
 chmod 777 /home/$username/
-echo "[General]" > /home/$username/.headphones/config.ini
-echo "config_version = 5" >> /home/$username/.headphones/config.ini
-echo "http_port = $HEADPORT" >> /home/$username/.headphones/config.ini
-echo "http_host = $HOSTIP" >> /home/$username/.headphones/config.ini
-echo "http_username = $WEBUSER" >> /home/$username/.headphones/config.ini
-echo "http_password = $WEBPASS" >> /home/$username/.headphones/config.ini
-echo "http_root = /" >> /home/$username/.headphones/config.ini
-echo "http_proxy = 0" >> /home/$username/.headphones/config.ini
-echo "enable_https = 0" >> /home/$username/.headphones/config.ini
-echo "https_cert = /home/castro/.headphones/server.crt" >> /home/$username/.headphones/config.ini
-echo "https_key = /home/castro/.headphones/server.key" >> /home/$username/.headphones/config.ini
-echo "launch_browser = 1" >> /home/$username/.headphones/config.ini
-echo "api_enabled = 0" >> /home/$username/.headphones/config.ini
-echo "api_key = """ >> /home/$username/.headphones/config.ini
-echo "log_dir = /home/$username/.headphones/logs" >> /home/$username/.headphones/config.ini
-echo "cache_dir = /home/$username/.headphones/cache" >> /home/$username/.headphones/config.ini
-echo "git_path = """ >> /home/$username/.headphones/config.ini
-echo "git_user = rembo10" >> /home/$username/.headphones/config.ini
-echo "git_branch = master" >> /home/$username/.headphones/config.ini
-echo "check_github = 1" >> /home/$username/.headphones/config.ini
-echo "check_github_on_startup = 1" >> /home/$username/.headphones/config.ini
-echo "check_github_interval = 360" >> /home/$username/.headphones/config.ini
-echo "music_dir = /home/music" >> /home/$username/.headphones/config.ini
-echo "destination_dir = /home/music" >> /home/$username/.headphones/config.ini
-echo "lossless_destination_dir = """ >> /home/$username/.headphones/config.ini
-echo "preferred_quality = 0" >> /home/$username/.headphones/config.ini
-echo "preferred_bitrate = """ >> /home/$username/.headphones/config.ini
-echo "preferred_bitrate_high_buffer = """ >> /home/$username/.headphones/config.ini
-echo "preferred_bitrate_low_buffer = """ >> /home/$username/.headphones/config.ini
-echo "preferred_bitrate_allow_lossless = 0" >> /home/$username/.headphones/config.ini
-echo "detetc_bitrate = 0" >> /home/$username/.headphones/config.ini
-echo "auto_add_artists = 1" >> /home/$username/.headphones/config.ini
-echo "corretc_metadata = 1" >> /home/$username/.headphones/config.ini
-echo "move_files = 1" >> /home/$username/.headphones/config.ini
-echo "rename_files = 1" >> /home/$username/.headphones/config.ini
-echo "folder_format = $Artist/$Album [$Year]" >> /home/$username/.headphones/config.ini
-echo "file_format = $Track $Artist - $Album [$Year] - $Title" >> /home/$username/.headphones/config.ini
-echo "file_underscores = 0" >> /home/$username/.headphones/config.ini
-echo "cleanup_files = 1" >> /home/$username/.headphones/config.ini
-echo "add_album_art = 1" >> /home/$username/.headphones/config.ini
-echo "album_art_format = folder" >> /home/$username/.headphones/config.ini
-echo "embed_album_art = 1" >> /home/$username/.headphones/config.ini
-echo "embed_lyrics = 0" >> /home/$username/.headphones/config.ini
-echo "nzb_downloader = 0" >> /home/$username/.headphones/config.ini
-echo "torrent_downloader = 0" >> /home/$username/.headphones/config.ini
-echo "download_dir = /home/completed/music" >> /home/$username/.headphones/config.ini
-echo "blackhole_dir = """ >> /home/$username/.headphones/config.ini
-echo "usenet_retention = 1200" >> /home/$username/.headphones/config.ini
-echo "include_extras = 0" >> /home/$username/.headphones/config.ini
-echo "extras = """ >> /home/$username/.headphones/config.ini
-echo "autowant_upcoming = 1" >> /home/$username/.headphones/config.ini
-echo "autowant_all = 0" >> /home/$username/.headphones/config.ini
-echo "keep_torrent_files = 0" >> /home/$username/.headphones/config.ini
-echo "numberofseeders = 10" >> /home/$username/.headphones/config.ini
-echo "torrentblackhole_dir = /home/torrents" >> /home/$username/.headphones/config.ini
-echo "isohunt = 0" >> /home/$username/.headphones/config.ini
-echo "kat = 1" >> /home/$username/.headphones/config.ini
-echo "mininova = 0" >> /home/$username/.headphones/config.ini
-echo "piratebay = 1" >> /home/$username/.headphones/config.ini
-echo "piratebay_proxy_url = """ >> /home/$username/.headphones/config.ini
-echo "download_torrent_dir = /home/completed/music" >> /home/$username/.headphones/config.ini
-echo "search_interval = 360" >> /home/$username/.headphones/config.ini
-echo "libraryscan = 1" >> /home/$username/.headphones/config.ini
-echo "libraryscan_interval = 1800" >> /home/$username/.headphones/config.ini
-echo "download_scan_interval = 5" >> /home/$username/.headphones/config.ini
-echo "preferred_words = """ >> /home/$username/.headphones/config.ini
-echo "ignored_words = """ >> /home/$username/.headphones/config.ini
-echo "required_words = """ >> /home/$username/.headphones/config.ini
-echo "lastfm_username = """ >> /home/$username/.headphones/config.ini
-echo "interface = default" >> /home/$username/.headphones/config.ini
-echo "folder_permissions = 0755" >> /home/$username/.headphones/config.ini
-echo "file_permissions = 0644" >> /home/$username/.headphones/config.ini
-echo "music_encoder = 0" >> /home/$username/.headphones/config.ini
-echo "encoder = ffmpeg" >> /home/$username/.headphones/config.ini
-echo "xldprofile = """ >> /home/$username/.headphones/config.ini
-echo "bitrate = 192" >> /home/$username/.headphones/config.ini
-echo "samplingfrequency = 44100" >> /home/$username/.headphones/config.ini
-echo "encoder_path = """ >> /home/$username/.headphones/config.ini
-echo "advancedencoder = """ >> /home/$username/.headphones/config.ini
-echo "encoderoutputformat = mp3" >> /home/$username/.headphones/config.ini
-echo "encoderquality = 2" >> /home/$username/.headphones/config.ini
-echo "encodervbrcbr = cbr" >> /home/$username/.headphones/config.ini
-echo "encoderlossless = 1" >> /home/$username/.headphones/config.ini
-echo "delete_lossless_files = 1" >> /home/$username/.headphones/config.ini
-echo "mirror = headphones" >> /home/$username/.headphones/config.ini
-echo "customhost = localhost" >> /home/$username/.headphones/config.ini
-echo "customport = 5000" >> /home/$username/.headphones/config.ini
-echo "customsleep = 1" >> /home/$username/.headphones/config.ini
-echo "hpuser = " >> /home/$username/.headphones/config.ini
-echo "hppass = " >> /home/$username/.headphones/config.ini
-echo "[Waffles]" >> /home/$username/.headphones/config.ini
-echo "waffles = 0" >> /home/$username/.headphones/config.ini
-echo "waffles_uid = """ >> /home/$username/.headphones/config.ini
-echo "waffles_passkey = """ >> /home/$username/.headphones/config.ini
-echo "[Rutracker]" >> /home/$username/.headphones/config.ini
-echo "rutracker = 0" >> /home/$username/.headphones/config.ini
-echo "rutracker_user = """ >> /home/$username/.headphones/config.ini
-echo "rutracker_password = """ >> /home/$username/.headphones/config.ini
-echo "[What.cd]" >> /home/$username/.headphones/config.ini
-echo "whatcd = 0" >> /home/$username/.headphones/config.ini
-echo "whatcd_username = """ >> /home/$username/.headphones/config.ini
-echo "whatcd_password = """ >> /home/$username/.headphones/config.ini
-echo "[SABnzbd]" >> /home/$username/.headphones/config.ini
-echo "sab_host = http://$HOSTIP:$SABPORT/sabnzbd" >> /home/$username/.headphones/config.ini
-echo "sab_username = $WEBUSER" >> /home/$username/.headphones/config.ini
-echo "sab_password = $WEBPASS" >> /home/$username/.headphones/config.ini
-echo "sab_apikey = " >> /home/$username/.headphones/config.ini
-echo "sab_category = Music" >> /home/$username/.headphones/config.ini
-echo "[NZBget]" >> /home/$username/.headphones/config.ini
-echo "nzbget_username = nzbget" >> /home/$username/.headphones/config.ini
-echo "nzbget_password = """ >> /home/$username/.headphones/config.ini
-echo "nzbget_category = """ >> /home/$username/.headphones/config.ini
-echo "nzbget_host = """ >> /home/$username/.headphones/config.ini
-echo "[Headphones]" >> /home/$username/.headphones/config.ini
-echo "headphones_indexer = 1" >> /home/$username/.headphones/config.ini
-echo "[Transmission]" >> /home/$username/.headphones/config.ini
-echo "transmission_host =" >> /home/$username/.headphones/config.ini
-echo "transmission_username =" >> /home/$username/.headphones/config.ini
-echo "transmission_password =" >> /home/$username/.headphones/config.ini
-echo "[uTorrent]" >> /home/$username/.headphones/config.ini
-echo "utorrent_host = """ >> /home/$username/.headphones/config.ini
-echo "utorrent_username = """ >> /home/$username/.headphones/config.ini
-echo "utorrent_password = """ >> /home/$username/.headphones/config.ini
-echo "[Newznab]" >> /home/$username/.headphones/config.ini
-echo "newznab = 1" >> /home/$username/.headphones/config.ini
-echo "newznab_host = http://$HOSTIP" >> /home/$username/.headphones/config.ini
-echo "newznab_apikey =" >> /home/$username/.headphones/config.ini
-echo "newznab_enabled = 1" >> /home/$username/.headphones/config.ini
-echo "extra_newznabs =" >> /home/$username/.headphones/config.ini
-echo "[NZBsorg]" >> /home/$username/.headphones/config.ini
-echo "nzbsorg = 0" >> /home/$username/.headphones/config.ini
-echo "nzbsorg_uid = None" >> /home/$username/.headphones/config.ini
-echo "nzbsorg_hash = """ >> /home/$username/.headphones/config.ini
-echo "[NZBsRus]" >> /home/$username/.headphones/config.ini
-echo "nzbsrus = 0" >> /home/$username/.headphones/config.ini
-echo "nzbsrus_uid = """ >> /home/$username/.headphones/config.ini
-echo "nzbsrus_apikey = """ >> /home/$username/.headphones/config.ini
-echo "[Prowl]" >> /home/$username/.headphones/config.ini
-echo "prowl_enabled = 0" >> /home/$username/.headphones/config.ini
-echo "prowl_keys = """ >> /home/$username/.headphones/config.ini
-echo "prowl_onsnatch = 0" >> /home/$username/.headphones/config.ini
-echo "prowl_priority = 0" >> /home/$username/.headphones/config.ini
-echo "[XBMC]" >> /home/$username/.headphones/config.ini
-echo "xbmc_enabled = 0" >> /home/$username/.headphones/config.ini
-echo "xbmc_host = """ >> /home/$username/.headphones/config.ini
-echo "xbmc_username = """ >> /home/$username/.headphones/config.ini
-echo "xbmc_password = """ >> /home/$username/.headphones/config.ini
-echo "xbmc_update = 0" >> /home/$username/.headphones/config.ini
-echo "xbmc_notify = 0" >> /home/$username/.headphones/config.ini
-echo "[NMA]" >> /home/$username/.headphones/config.ini
-echo "nma_enabled = 0" >> /home/$username/.headphones/config.ini
-echo "nma_apikey = """ >> /home/$username/.headphones/config.ini
-echo "nma_priority = 0" >> /home/$username/.headphones/config.ini
-echo "nma_onsnatch = 0" >> /home/$username/.headphones/config.ini
-echo "[Pushover]" >> /home/$username/.headphones/config.ini
-echo "pushover_enabled = 0" >> /home/$username/.headphones/config.ini
-echo "pushover_keys = """ >> /home/$username/.headphones/config.ini
-echo "pushover_onsnatch = 0" >> /home/$username/.headphones/config.ini
-echo "pushover_priority = 0" >> /home/$username/.headphones/config.ini
-echo "[Synoindex]" >> /home/$username/.headphones/config.ini
-echo "synoindex_enabled = 0" >> /home/$username/.headphones/config.ini
-echo "[Advanced]" >> /home/$username/.headphones/config.ini
-echo "album_completion_pct = 80" >> /home/$username/.headphones/config.ini
-echo "cache_sizemb = 32" >> /home/$username/.headphones/config.ini
-echo "journal_mode = wal" >> /home/$username/.headphones/config.ini
+mv /home/$username/.headphones/config.ini /home/$username/.headphones/config.old
+
+cat > /home/$username/.headphones/config.ini << EOF
+[General]
+config_version = 5
+http_port = $HEADPORT
+http_host = $HOSTIP
+http_username = $WEBUSER
+http_password = $WEBPASS
+http_root = /
+http_proxy = 0
+enable_https = 0
+https_cert = /home/$username/.headphones/server.crt
+https_key = /home/$username/.headphones/server.key
+launch_browser = 1
+api_enabled = 0
+api_key = ""
+log_dir = /home/$username/.headphones/logs
+cache_dir = /home/$username/.headphones/cache
+git_path = ""
+git_user = rembo10
+git_branch = master
+check_github = 1
+check_github_on_startup = 1
+check_github_interval = 360
+music_dir = /home/music
+destination_dir = /home/music
+lossless_destination_dir = ""
+preferred_quality = 0
+preferred_bitrate = ""
+preferred_bitrate_high_buffer = ""
+preferred_bitrate_low_buffer = ""
+preferred_bitrate_allow_lossless = 0
+detect_bitrate = 0
+auto_add_artists = 1
+correct_metadata = 1
+move_files = 1
+rename_files = 1
+folder_format = $Artist/$Album [$Year]
+file_format = $Track $Artist - $Album ($Year) - $Title
+file_underscores = 0
+cleanup_files = 1
+add_album_art = 1
+album_art_format = folder
+embed_album_art = 1
+embed_lyrics = 0
+nzb_downloader = 0
+torrent_downloader = 1
+download_dir = /home/completed/music
+blackhole_dir = ""
+usenet_retention = 1200
+include_extras = 0
+extras = ""
+autowant_upcoming = 1
+autowant_all = 0
+keep_torrent_files = 0
+numberofseeders = 10
+torrentblackhole_dir = /home/torrents
+isohunt = 0
+kat = 1
+mininova = 0
+piratebay = 1
+piratebay_proxy_url = ""
+download_torrent_dir = /home/completed/music
+search_interval = 360
+libraryscan = 1
+libraryscan_interval = 1800
+download_scan_interval = 5
+update_db_interval = 24
+mb_ignore_age = 365
+preferred_words = ""
+ignored_words = ""
+required_words = ""
+lastfm_username = ""
+interface = default
+folder_permissions = 0755
+file_permissions = 0644
+music_encoder = 0
+encoder = ffmpeg
+xldprofile = ""
+bitrate = 192
+samplingfrequency = 44100
+encoder_path = ""
+advancedencoder = ""
+encoderoutputformat = mp3
+encoderquality = 2
+encodervbrcbr = cbr
+encoderlossless = 1
+delete_lossless_files = 1
+mirror = headphones
+customhost = localhost
+customport = 5000
+customsleep = 1
+hpuser = brownster
+hppass = tcwacf1979
+[Waffles]
+waffles = 0
+waffles_uid = ""
+waffles_passkey = ""
+[Rutracker]
+rutracker = 0
+rutracker_user = ""
+rutracker_password = ""
+[What.cd]
+whatcd = 0
+whatcd_username = ""
+whatcd_password = ""
+[SABnzbd]
+sab_host = http://$HOSTIP:$SABPORT/sabnzbd
+sab_username = $WEBUSER
+sab_password = $WEBPASS
+sab_apikey = 
+sab_category = Music
+[NZBget]
+nzbget_username = nzbget
+nzbget_password = ""
+nzbget_category = ""
+nzbget_host = ""
+[Headphones]
+headphones_indexer = 1
+[Transmission]
+transmission_host = http://$HOSTIP:$TRANPORT
+transmission_username = $WEBUSER
+transmission_password = $WEBPASS
+[uTorrent]
+utorrent_host = ""
+utorrent_username = ""
+utorrent_password = ""
+[Newznab]
+newznab = 1
+newznab_host = http://$HOSTIP/
+newznab_apikey = 01e7a9d89a824bda0a4d5b37cbeb8f51
+newznab_enabled = 1
+extra_newznabs = 
+[NZBsorg]
+nzbsorg = 0
+nzbsorg_uid = None
+nzbsorg_hash = ""
+[NZBsRus]
+nzbsrus = 0
+nzbsrus_uid = ""
+nzbsrus_apikey = ""
+[omgwtfnzbs]
+omgwtfnzbs = 0
+omgwtfnzbs_uid = ""
+omgwtfnzbs_apikey = ""
+[Prowl]
+prowl_enabled = 0
+prowl_keys = ""
+prowl_onsnatch = 0
+prowl_priority = 0
+[XBMC]
+xbmc_enabled = 0
+xbmc_host = ""
+xbmc_username = ""
+xbmc_password = ""
+xbmc_update = 0
+xbmc_notify = 0
+[NMA]
+nma_enabled = 0
+nma_apikey = ""
+nma_priority = 0
+nma_onsnatch = 0
+[Pushover]
+pushover_enabled = 0
+pushover_keys = ""
+pushover_onsnatch = 0
+pushover_priority = 0
+[Synoindex]
+synoindex_enabled = 0
+[Advanced]
+album_completion_pct = 80
+cache_sizemb = 32
+journal_mode = wal
+EOF
+
+
+
 cp /home/$username/.headphones/config.ini /etc/default/headphones
 chown $username /home/$username/.headphones/
 chown $username /home/$username/.headphones/*
