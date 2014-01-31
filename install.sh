@@ -1,5 +1,5 @@
 #! /bin/bash
-#by marc brown - use at your own risk
+#by Brownster - use at your own risk
 ######################SETTINGS to be filled in####################################################
 
 #MUST CHANGE THESE SETTINGS
