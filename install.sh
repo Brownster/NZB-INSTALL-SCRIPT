@@ -257,7 +257,7 @@ echo "###############################"
 echo "#installing squid proxy server#"
 echo "###############################"
 sleep 3
-sudo apt-get install -y squid3 squid3-common
+sudo apt-get install squid3 squid3-common -y
 
 cat > /etc/squid3/squid.conf << EOF
 http_port $SQUIDPORT
@@ -347,6 +347,8 @@ echo "# installing sabnzbd #"
 echo "######################
 sleep 3
 apt-get install git -y
+echo "install GIT"
+sleep 2
 apt-get install sabnzbdplus -y
 echo "making a copy /home/ dir"
 sleep 2
