@@ -350,11 +350,9 @@ apt-get install python-cheetah -y
 
 echo "######################"
 echo "# installing sabnzbd #"
-echo "######################
+echo "######################"
 sleep 3
 apt-get install sabnzbdplus -y
-echo "making a copy /home/ dir"
-sleep 2
 mv /etc/default/sabnzbdplus /home/backups/sabnzbd/sabnzbdplus.orig
 echo "change sab config"
 sleep 2
