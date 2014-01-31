@@ -202,6 +202,12 @@ sleep 3
 usermod -a -G sudo $username
 usermod -a -G fuse $username
 
+echo "ip spoofing"
+cat > /etc/host.conf << EOF
+order bind,hosts
+nospoof on
+EOF
+
 echo "##############################"
 echo "# Harden Network with sysctl #"
 echo "##############################"
