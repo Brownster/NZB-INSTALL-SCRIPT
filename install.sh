@@ -346,7 +346,8 @@ echo "######################"
 echo "# installing sabnzbd #"
 echo "######################
 sleep 3
-sudo apt-get install -y sabnzbdplus
+apt-get install -y git
+apt-get install -y sabnzbdplus
 echo "making a copy /home/ dir"
 sleep 2
 mv /etc/default/sabnzbdplus /home/backups/sabnzbd/sabnzbdplus.orig
