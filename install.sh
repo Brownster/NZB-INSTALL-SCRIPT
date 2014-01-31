@@ -339,6 +339,8 @@ mkdir /home/backups/sabnzbd
 chown $username /home/*/*/
 chmod 777  /home/*/*
 
+apt-get install python-cheetah -y
+
 echo "######################"
 echo "# installing sabnzbd #"
 echo "######################
