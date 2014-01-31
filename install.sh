@@ -137,7 +137,7 @@ apt-get update
 #echo "upgrading"
 #sleep 2
 #apt-get upgrade -y
-
+apt-get install git -y
 echo "####################"
 echo "## installing ufw ##"
 echo "####################"
