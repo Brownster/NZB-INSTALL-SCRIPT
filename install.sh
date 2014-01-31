@@ -345,9 +345,6 @@ echo "######################"
 echo "# installing sabnzbd #"
 echo "######################
 sleep 3
-apt-get install git -y
-echo "install GIT"
-sleep 2
 apt-get install sabnzbdplus -y
 echo "making a copy /home/ dir"
 sleep 2
