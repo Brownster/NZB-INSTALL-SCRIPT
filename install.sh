@@ -633,7 +633,7 @@ cp couchpotato /home/$username/backups/couchpotato
 mv couchpotato /home/$username/.couchpotato
 cp /home/$username/.couchpotato/init/ubuntu /etc/init.d/couchpotato
 
-cat > /etc/default/couchpotato <<EOF
+cat > /etc/default/couchpotato << EOF
 # COPY THIS FILE TO /etc/default/couchpotato 
 # OPTIONS: CP_HOME, CP_USER, CP_DATA, CP_PIDFILE, PYTHON_BIN, CP_OPTS, SSD_OPTS
 
@@ -882,18 +882,17 @@ chown $username /home/$username/.lazylibrarian
 chmod 777 /home/$username/.lazylibrarian
 chmod +x /etc/init.d/lazylibrarian  
 update-rc.d lazylibrarian  defaults
-echo "starting Lazy Librarian on port $BOOKPORT"
 echo "Lazy Librarian will start on nect boot you can access the ui via http://$HOSTIP:$BOOKPORT"
 sleep 2
 
 echo "installing mylar"
-cd /home/username/temp
+cd /home/$username/temp
 git clone https://github.com/evilhero/mylar.git mylar
 cp /home/$username/temp/mylar /home/backups/mylar/
 mv /home/$username/temp/mylar  /home/$username/.mylar 
 
 echo "installing gamez"
-cd /home/username/temp
+cd /home/$username/temp
 git clone https://github.com/mdlesk/Gamez.git gamez
 cp /home/$username/temp/gamez /home/backups/gamez/
 mv /home/$username/temp/gamez  /home/$username/.gamez
