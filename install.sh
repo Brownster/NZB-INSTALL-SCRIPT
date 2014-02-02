@@ -455,7 +455,7 @@ echo "CouchPotato has been started on port $COUCHPORT"
 echo "#########################"
 echo "# installing Headphones #"
 echo "#########################"
-sleep 3
+sleep 1
 cd /home/$username/temp
 git clone https://github.com/rembo10/headphones.git  headphones
 cp /home/$username/temp/headphones /home/backups/headphones/
@@ -465,7 +465,7 @@ mv /home/$username/.headphones/config.ini /home/$username/.headphones/config.ori
 touch /home/$username/.headphones/config.ini
 chown $username /home/$username/.headphones/*
 chown $username /home/$username/.headphones/*/*
-chmod 777 /home/$username/*/*/
+echo "will try and move config probably wont be there"
 mv /home/$username/.headphones/config.ini /home/$username/.headphones/config.old
 
 cat > /home/$username/.headphones/config.ini << EOF
