@@ -407,7 +407,7 @@ SBPWD="$WEBPASS" #Set Sick Beard password (if you use one) here.
 case "$1" in
 start)
 #Start Sick Beard and send all messages to /dev/null.
-cd /home/$USER/.sickbeard
+cd /home/$username/.sickbeard
 echo "Starting Sick Beard"
 sudo -u $USER -EH nohup python /home/$USER/.sickbeard/SickBeard.py -q &gt; /dev/null 2&gt;&amp;1 &amp;
 ;;
@@ -424,7 +424,198 @@ esac
 exit 0
 EOF
 
+
+cat > /etc/default/sickbeard << EOF
+[General]
+config_version = 4
+log_dir = Logs
+web_port = $SICKPORT
+web_host = $HOSTIP
+web_ipv6 = 0
+web_log = 0
+web_root = ""
+web_username = $WEBUSER
+web_password = $WEBPASS
+anon_redirect = http://dereferer.org/?
+use_api = 0
+api_key = ""
+enable_https = 0
+https_cert = server.crt
+https_key = server.key
+use_nzbs = 1
+use_torrents = 0
+nzb_method = sabnzbd
+usenet_retention = 500
+search_frequency = 60
+download_propers = 1
+quality_default = 164
+status_default = 5
+flatten_folders_default = 0
+provider_order = sick_beard_index womble_s_index
+version_notify = 1
+naming_pattern = Season %0S/%SN %EN S%0SE%0E
+naming_custom_abd = 0
+naming_abd_pattern = ""
+naming_multi_ep = 1
+launch_browser = 1
+use_banner = 0
+use_listview = 0
+metadata_xbmc = 0|0|0|0|0|0
+metadata_xbmc_12plus = 1|1|1|1|1|1
+metadata_mediabrowser = 0|0|0|0|0|0
+metadata_ps3 = 0|0|0|0|0|0
+metadata_wdtv = 0|0|0|0|0|0
+metadata_tivo = 0|0|0|0|0|0
+metadata_synology = 0|0|0|0|0|0
+cache_dir = cache
+root_dirs = 0|/home/dadstv|/home/kidstv
+tv_download_dir = ""
+keep_processed_dir = 0
+move_associated_files = 1
+process_automatically = 0
+rename_episodes = 1
+create_missing_show_dirs = 0
+add_shows_wo_dir = 0
+extra_scripts = ""
+git_path = ""
+ignore_words = "german,french,core2hd,dutch,swedish,480p"
+[Blackhole]
+nzb_dir = ""
+torrent_dir = ""
+[EZRSS]
+ezrss = 0
+[HDBITS]
+hdbits = 0
+hdbits_username = ""
+hdbits_passkey = ""
+[TVTORRENTS]
+tvtorrents = 0
+[TVTORRENTS]
+tvtorrents = 0
+tvtorrents_digest = ""
+tvtorrents_hash = ""
+[BTN]
+btn = 0
+btn_api_key = ""
+[TorrentLeech]
+torrentleech = 0
+torrentleech_key = ""
+[NZBs]
+nzbs = 0
+nzbs_uid = ""
+nzbs_hash = ""
+[Womble]
+womble = 1
+[omgwtfnzbs]
+omgwtfnzbs = 0
+omgwtfnzbs_username = ""
+omgwtfnzbs_apikey = ""
+[SABnzbd]
+sab_username = marc
+sab_password = tcwacf1979
+sab_apikey = 
+sab_category = tv
+sab_host = http://$HOSTIP:$SABPASS/
+[NZBget]
+nzbget_password = 
+nzbget_category = tv
+nzbget_host = ""
+[XBMC]
+use_xbmc = 0
+xbmc_notify_onsnatch = 0
+xbmc_notify_ondownload = 0
+xbmc_update_library = 0
+xbmc_update_full = 0
+xbmc_update_onlyfirst = 0
+xbmc_host = ""
+xbmc_username = ""
+xbmc_password = ""
+[Plex]
+use_plex = 0
+plex_notify_onsnatch = 0
+plex_notify_ondownload = 0
+plex_update_library = 0
+plex_server_host = ""
+plex_host = ""
+plex_username = ""
+plex_password = ""
+[Growl]
+use_growl = 0
+growl_notify_onsnatch = 0
+growl_notify_ondownload = 0
+growl_host = ""
+growl_password = ""
+[Prowl]
+use_prowl = 0
+prowl_notify_onsnatch = 0
+prowl_notify_ondownload = 0
+prowl_api = ""
+prowl_priority = 0
+[Twitter]
+use_twitter = 0
+twitter_notify_onsnatch = 0
+twitter_notify_ondownload = 0
+twitter_username = ""
+twitter_password = ""
+twitter_prefix = Sick Beard
+[Boxcar]
+use_boxcar = 0
+boxcar_notify_onsnatch = 0
+boxcar_notify_ondownload = 0
+boxcar_username = ""
+[Pushover]
+use_pushover = 0
+pushover_notify_onsnatch = 0
+pushover_notify_ondownload = 0
+pushover_userkey = ""
+[Libnotify]
+use_libnotify = 0
+libnotify_notify_onsnatch = 0
+libnotify_notify_ondownload = 0
+[NMJ]
+use_nmj = 0
+nmj_host = ""
+nmj_database = ""
+nmj_mount = ""
+[Synology]
+use_synoindex = 0
+[NMJv2]
+use_nmjv2 = 0
+nmjv2_host = ""
+nmjv2_database = ""
+nmjv2_dbloc = ""
+[Trakt]
+use_trakt = 0
+trakt_username = ""
+trakt_password = ""
+trakt_api = ""
+[pyTivo]
+use_pytivo = 0
+pytivo_notify_onsnatch = 0
+pytivo_notify_ondownload = 0
+pyTivo_update_library = 0
+pytivo_host = ""
+pytivo_share_name = ""
+pytivo_tivo_name = ""
+[NMA]
+use_nma = 0
+nma_notify_onsnatch = 0
+nma_notify_ondownload = 0
+nma_api = ""
+nma_priority = 0
+[Newznab]
+newznab_data = "Sick Beard Index|http://lolo.sickbeard.com/|0|5030,5040|1!!!NZBs.org|http://nzbs.org/||5030,5040,5070,5090|"
+[GUI]
+coming_eps_layout = banner
+coming_eps_display_paused = 0
+coming_eps_sort = date
+EOF
+
+
+mv /home/castro/.sickbeard/config.ini /home/castro/.sickbeard/config.old
+cp /etc/default/sickbeard /home/castro/.sickbeard/config.ini
 chown $username /etc/init.d/sickbeard
+chown $username /home/$username/.sickbeard/*
 chmod +x /etc/init.d/sickbeard
 sudo update-rc.d sickbeard defaults
 chmod 777 /home/$username/.sickbeard/
@@ -570,8 +761,8 @@ mirror = headphones
 customhost = localhost
 customport = 5000
 customsleep = 1
-hpuser = brownster
-hppass = tcwacf1979
+hpuser = 
+hppass = 
 [Waffles]
 waffles = 0
 waffles_uid = ""
