@@ -312,6 +312,8 @@ mkdir /home/downloads/completed/tv
 mkdir /home/downloads/completed/films
 mkdir /home/downloads/completed/books
 mkdir /home/downloads/completed/music
+mkdir /home/downloads/completed/games
+mkdir /home/downloads/completed/comics
 mkdir /home/downloads/ongoing
 mkdir /home/media/
 mkdir /home/media/kidstv
@@ -320,12 +322,16 @@ mkdir /home/media/dadstv
 mkdir /home/media/dadsfilms
 mkdir /home/media/music
 mkdir /home/media/books
+mkdir /home/media/games
+mkdir /home/media/comics
 mkdir /home/backups/
 mkdir /home/backups/sickbeard
 mkdir /home/backups/couchpotato
 mkdir /home/backups/headphones
 mkdir /home/backups/lazylibrarian
 mkdir /home/backups/sabnzbd
+mkdir /home/backups/mylar
+mkdir /home/backups/gamez
 chown $username /home/*/*/
 chmod 777  /home/*/*
 
@@ -683,6 +689,19 @@ update-rc.d lazylibrarian  defaults
 echo "starting Lazy Librarian on port $BOOKPORT"
 echo "Lazy Librarian will start on nect boot you can access the ui via http://$HOSTIP:$BOOKPORT"
 sleep 2
+
+echo "installing mylar"
+cd /home/username/temp
+git clone https://github.com/evilhero/mylar.git mylar
+cp /home/$username/temp/mylar /home/backups/mylar/
+mv /home/$username/temp/mylar  /home/$username/.mylar 
+
+echo "installing gamez"
+cd /home/username/temp
+git clone https://github.com/mdlesk/Gamez.git gamez
+cp /home/$username/temp/gamez /home/backups/gamez/
+mv /home/$username/temp/gamez  /home/$username/.gamez
+
 
 echo "########################"
 echo "# installing curlftpfs #"
