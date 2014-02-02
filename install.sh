@@ -424,6 +424,7 @@ esac
 exit 0
 EOF
 
+chown $username /etc/init.d/sickbeard
 chmod +x /etc/init.d/sickbeard
 sudo update-rc.d sickbeard defaults
 chmod 777 /home/$username/.sickbeard/
