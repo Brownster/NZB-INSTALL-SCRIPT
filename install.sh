@@ -77,6 +77,12 @@ HEADPORT=7963
 #Lazy Librarian Please enter the port for web access
 BOOKPORT=7964
 
+#Mylar Please enter the port for web access
+MYLARPORT=7964
+
+#Gamez Please enter the port for web access
+GAMEPORT=7964
+
 ##############################################################################################
 ##############DONT change anything beyond this point##########################################
 ##############################################################################################
