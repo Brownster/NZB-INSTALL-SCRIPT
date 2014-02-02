@@ -121,21 +121,6 @@ else
 	exit 2
 	fi
 
-#read -p "Right were are ready to start are you sure you want to do this ? y/n :" -n 1 -r
-#if [[ ! $REPLY =~ ^[Nn]$ ]]
-#then
-	#exit 1
-#else
-	#fi
-#want this to be optional	
-#echo "####################################################################"	
-#echo "## Here we go starting with an apt-get update and apt-get upgrade ##"
-#echo "####################################################################"
-#sleep 3
-apt-get update
-#echo "upgrading"
-#sleep 2
-#apt-get upgrade -y
 apt-get install git -y
 echo "####################"
 echo "## installing ufw ##"
@@ -143,38 +128,29 @@ echo "####################"
 sleep 2
 apt-get install ufw -y
 echo "opening ports"
-sleep 2
 echo "###############################"
 echo "## opening ports on firewall ##"
 echo "###############################"
-sleep 2
 ufw allow $SSHPORT
 echo "opening old ssh port just for now to make sure we dont lose our connetcion"
-sleep 2
 ufw allow ssh
 echo "opening new Sab web UI port"
-sleep 2
 sudo ufw allow $SABPORT
 echo "opening new Sickbeard web UI port"
-sleep 2
 sudo ufw allow $SICKPORT
 echo "opening new Couchpotato web UI port"
-sleep 2
 sudo ufw allow $COUCHPORT
 echo "opening new Headphones web UI port"
-sleep 2
 sudo ufw allow $HEADPORT
 echo "opening new Lazy Librarian web UI port"
-sleep 2
 sudo ufw allow $BOOKPORT
 echo "opening new Squid Proxy server Port"
-sleep 2
 sudo ufw allow $SQUIDPORT
 echo "editing sshd config"
 sed -i "s/port 22/port $sshport/" /etc/ssh/sshd_config
 sed -i "s/protocol 3,2/protocol 2/" /etc/ssh/sshd_config
-#sed -i "s/PermitRootLogin yes/PermitRootLogin no/" /etc/ssh/sshd_config
-sed -i "s/DebianBanner yes/DebianBanner no/" /etc/ssh/sshd_config
+sed -i "s/PermitRootLogin yes/PermitRootLogin no/" /etc/ssh/sshd_config
+#sed -i "s/DebianBanner yes/DebianBanner no/" /etc/ssh/sshd_config
 echo "restarting ssh"
 sleep 2
 /etc/init.d/ssh restart -y
