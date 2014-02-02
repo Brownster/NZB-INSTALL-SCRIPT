@@ -99,11 +99,11 @@ echo "************* in the /tmp/ folder                                         
 echo "******************************************************************************************"
 echo "******************************************************************************************"
 echo "******************************************************************************************"
-sleep 7
+sleep 5
+apt-get update
 HOSTIP=`ifconfig|xargs|awk '{print $7}'|sed -e 's/[a-z]*:/''/'`
 echo "i will be using: $HOSTIP"
 echo "we will add a user so we can stop using root"
-sleep 2
 if [ $(id -u) -eq 0 ]; then
 	read -p "Enter username : " username
 	read -s -p "Enter password : " password
