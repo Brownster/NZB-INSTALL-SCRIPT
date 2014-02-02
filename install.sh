@@ -100,9 +100,8 @@ echo "**************************************************************************
 echo "******************************************************************************************"
 echo "******************************************************************************************"
 sleep 7
-echo "i will be using:"
-HOSTIP= ifconfig | awk -F':' '/inet addr/&&!/127.0.0.1/{split($2,_," ");print _[1]}'
-echo "host ip for setting up sab etc"
+HOSTIP=`ifconfig|xargs|awk '{print $7}'|sed -e 's/[a-z]*:/''/'`
+echo "i will be using: $HOSTIP"
 echo "we will add a user so we can stop using root"
 sleep 2
 if [ $(id -u) -eq 0 ]; then
