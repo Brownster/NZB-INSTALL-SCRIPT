@@ -445,6 +445,7 @@ EOF
 
 chmod +x /etc/init.d/sickbeard
 sudo update-rc.d sickbeard defaults
+chmod 777 /home/$username/.sickbeard/
 sudo /etc/init.d/sickbeard stop
 sudo /etc/init.d/sickbeard start
 echo "sick beard is now running on $HOSTIP:$SICKPORT"
@@ -471,6 +472,7 @@ EOF
 
 chmod +x /etc/init.d/couchpotato
 sudo update-rc.d couchpotato defaults
+chmod 777 /home/$username/.couchpotato/
 echo "starting couchpotato"
 python /home/$username/.couchpotato/CouchPotato.py --daemon
 echo "CouchPotato has been started on port $COUCHPORT"
@@ -488,7 +490,7 @@ mv /home/$username/.headphones/config.ini /home/$username/.headphones/config.ori
 touch /home/$username/.headphones/config.ini
 chown $username /home/$username/.headphones/*
 chown $username /home/$username/.headphones/*/*
-chmod 777 /home/$username/
+chmod 777 /home/$username/*/*/
 mv /home/$username/.headphones/config.ini /home/$username/.headphones/config.old
 
 cat > /home/$username/.headphones/config.ini << EOF
@@ -674,7 +676,7 @@ chown $username /home/$username/.headphones/*/*
 chmod 777 /home/$username/.headphones/*
 chown $username /home/$userna
 chmod +x /etc/init.d/headphones  
-update-rc.d headphones defaults  
+update-rc.d headphones defaults
 echo "starting Headphones on port $HEADPORT"   
 python /home/$username/.headphones/Headphones.py --daemon
 echo "Headphones has started you can try http://$HOSTIP:$HEADPORT"
@@ -702,7 +704,7 @@ EOF
 chown $username /home/$username/.lazylibrarian
 chmod 777 /home/$username/.lazylibrarian
 chmod +x /etc/init.d/lazylibrarian  
-update-rc.d lazylibrarian  defaults  
+update-rc.d lazylibrarian  defaults
 echo "starting Lazy Librarian on port $BOOKPORT"
 echo "Lazy Librarian will start on nect boot you can access the ui via http://$HOSTIP:$BOOKPORT"
 sleep 2
