@@ -451,6 +451,10 @@ CP_DATA=/home/$username/.config/couchpotato
 CP_PIDFILE=/home/$username/.pid/couchpotato.pid
 EOF
 
+cat > /home/castro/.pid/couchpotato.pid << EOF
+50004
+EOF
+
 chmod +x /etc/init.d/couchpotato
 sudo update-rc.d couchpotato defaults
 chmod 777 /home/$username/.couchpotato/
