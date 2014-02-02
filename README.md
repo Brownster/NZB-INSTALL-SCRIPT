@@ -21,7 +21,7 @@ To install get a kvm vps from ramnode or another vps provider reinstall the os w
 log on as root you should change the root password now with "passwd" and then copy paste the following:
 
 
-apt-get git -y
+apt-get install git -y
 
 git clone https://github.com/Brownster/NZB-INSTALL-SCRIPT.git installsh
 
