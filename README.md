@@ -122,8 +122,3 @@ then run the script by typing:
 You will be prompted for a new username and password this script will create a user to stop havingto use root.
 
 You will also be prompted to confirm a couple of steps but apart form that it will take care of the rest.
-
-
-
-
-
