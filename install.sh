@@ -643,12 +643,12 @@ journal_mode = wal
 EOF
 
 
-
 cp /home/$username/.headphones/config.ini /etc/default/headphones
 chown $username /home/$username/.headphones/
 chown $username /home/$username/.headphones/*
 chown $username /home/$username/.headphones/*/*
 chmod 777 /home/$username/.headphones/*
+chmod 777 /home/$username/.headphones/logs/headphones.log
 chown $username /home/$userna
 chmod +x /etc/init.d/headphones  
 update-rc.d headphones defaults
