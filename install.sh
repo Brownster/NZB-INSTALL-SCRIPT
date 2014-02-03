@@ -316,10 +316,8 @@ mkdir /home/downloads/completed/games
 mkdir /home/downloads/completed/comics
 mkdir /home/downloads/ongoing
 mkdir /home/media/
-mkdir /home/media/kidstv
-mkdir /home/media/kidsfilms
-mkdir /home/media/dadstv
-mkdir /home/media/dadsfilms
+mkdir /home/media/films
+mkdir /home/media/tv
 mkdir /home/media/music
 mkdir /home/media/books
 mkdir /home/media/games
@@ -467,7 +465,7 @@ metadata_wdtv = 0|0|0|0|0|0
 metadata_tivo = 0|0|0|0|0|0
 metadata_synology = 0|0|0|0|0|0
 cache_dir = cache
-root_dirs = 0|/home/dadstv|/home/kidstv
+root_dirs = 0|/home/tv|
 tv_download_dir = ""
 keep_processed_dir = 0
 move_associated_files = 1
