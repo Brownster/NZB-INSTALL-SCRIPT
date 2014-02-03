@@ -6,7 +6,7 @@ What is Working and checked with reboot
 Sabnzbdplus
 Headphones
 
-Install Script for a clean kvm vps install of ubuntu 12.04 Sabnzb, Transmision, Headphones, Sickbeard, Couchpotato, LazyLibrarian, Mylar, Gamez Fail2ban setup for ssh
+Install Script for a clean kvm vps install of ubuntu 12.04 Sabnzb, Transmision, Headphones, Sickbeard, Couchpotato, LazyLibrarian, Mylar, Gamez, Maraschino Fail2ban setup for ssh
 curlftps for mount points back to your local media
 UFW for easy firewall config
 squidproxy  for anonymous web browsing proxy server useful in the uk
