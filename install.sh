@@ -98,7 +98,7 @@ GAMESPORT=7966
 #Transmission RPC Port (web ui)
 $TRANPORT=7977
 
-#Transmission port
+#Transmission peer port
 $TRANPPORT=61724
 
 ##############################################################################################
