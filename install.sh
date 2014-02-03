@@ -47,6 +47,18 @@ MUSICFTPDIR=music
 #Books ftp location
 BOOKSFTPDIR=ebooks
 
+#Books ftp location
+GAMESFTPDIR=games
+
+#Books ftp location
+MYLARFTPDIR=mylar
+
+#games mount location
+GAMESMNTDIR=/home/media/games
+
+#comics mount location
+MYLARMNTDIR=/home/media/mylar
+
 #films mount location
 FILMMNTDIR=/home/media/films
 
@@ -81,12 +93,12 @@ BOOKPORT=7964
 MYLARPORT=7965
 
 #Gamez Please enter the port for web access
-GAMEZPORT=7966
+GAMESPORT=7966
 
-#Transmission RPC Port
+#Transmission RPC Port (web ui)
 $TRANPORT=7977
 
-#Transmission start port
+#Transmission port
 $TRANPPORT=61724
 
 ##############################################################################################
