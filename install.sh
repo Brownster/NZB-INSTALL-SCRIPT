@@ -109,7 +109,13 @@ sleep 5
 apt-get update
 HOSTIP=`ifconfig|xargs|awk '{print $7}'|sed -e 's/[a-z]*:/''/'`
 echo "i will be using: $HOSTIP"
-echo "we will add a user so we can stop using root"
+
+echo "#######################"
+echo "## create a new user ##"
+echo "#######################"
+
+echo "we will add a user so we can stop using root, please provide username and password when prompted"
+sleep2
 if [ $(id -u) -eq 0 ]; then
 	read -p "Enter username : " username
 	read -s -p "Enter password : " password
@@ -127,13 +133,18 @@ else
 	exit 2
 	fi
 
+#just in case we dont have git
 apt-get install git -y
+#install python now incase sabnzbsplus install fails
+apt-get install python-cheetah -y
+
 echo "####################"
 echo "## installing ufw ##"
 echo "####################"
 sleep 2
 apt-get install ufw -y
-echo "opening ports"
+
+
 echo "###############################"
 echo "## opening ports on firewall ##"
 echo "###############################"
@@ -164,6 +175,7 @@ echo "enabling firewall"
 sleep 2
 ufw enable -y
 
+
 echo "##########################"
 echo "## secure shared memory ##"
 echo "##########################"
@@ -176,6 +188,7 @@ usermod -a -G admin $username
 echo "protect su by limiting access to admin group only"
 dpkg-statoverride --update --add $username admin 4750 /bin/su
 
+
 echo "############################################"
 echo "# adding $username to sudo and fuse groups #"
 echo "############################################"
@@ -183,7 +196,10 @@ sleep 3
 usermod -a -G sudo $username
 usermod -a -G fuse $username
 
-echo "ip spoofing"
+
+echo "############################"
+echo "## ip spoofing protection ##"
+echo "############################"
 cat > /etc/host.conf << EOF
 order bind,hosts
 nospoof on
@@ -247,9 +263,9 @@ sed -i 's/port = sshd/port = $SSHPORT/' /etc/fail2ban/jail.conf
 sed -i 's/maxretry = 5/maxretry = 3/' /etc/fail2ban/jail.conf
 
 
-echo "###############################"
-echo "#installing squid proxy server#"
-echo "###############################"
+echo "###################################"
+echo "## installing squid proxy server ##"
+echo "###################################"
 sleep 2
 sudo apt-get install squid3 squid3-common -y
 
@@ -289,20 +305,20 @@ request_header_access All deny all
 http_access allow ncsa_auth
 EOF
 
-sudo apt-get install apache2-utils -y
-sudo echo "" >> /etc/squid3/squid_passwd
-sudo touch /etc/squid3/squid_passwd
-sudo chmod 777 /etc/squid3/squid_passwd
-sudo htpasswd -b -c /etc/squid3/squid_user $SQUIDUSER $SQUIDPASS
+apt-get install apache2-utils -y
+echo "" >> /etc/squid3/squid_passwd
+touch /etc/squid3/squid_passwd
+chmod 777 /etc/squid3/squid_passwd
+htpasswd -b -c /etc/squid3/squid_user $SQUIDUSER $SQUIDPASS
 service squid3 stop
 service squid3 start
 echo "squid started on port $SQUIDPORT #"
 
 
 
-echo "########################"
-echo "# creating Diretcories #"
-echo "########################"
+echo "##########################"
+echo "## creating Diretcories ##"
+echo "##########################"
 sleep 1
 mkdir /home/$username/.pid/
 mkdir /home/$username/temp
@@ -333,11 +349,12 @@ mkdir /home/backups/gamez
 chown $username /home/*/*/
 chmod 777  /home/*/*
 
-apt-get install python-cheetah -y
 
-echo "######################"
-echo "# installing sabnzbd #"
-echo "######################"
+
+
+echo "########################"
+echo "## installing sabnzbd ##"
+echo "########################"
 sleep 2
 apt-get install sabnzbdplus -y
 mv /etc/default/sabnzbdplus /home/backups/sabnzbd/sabnzbdplus.orig
@@ -355,9 +372,11 @@ echo "starting sabnzbplus"
 /etc/init.d/sabnzbdplus start
 echo "sabnzbdplus is now running on $HOSTIP:$SABPORT"
 
-echo "########################"
-echo "# installing sickbeard "
-echo "########################"
+
+
+echo "##########################"
+echo "## installing sickbeard ##"
+echo "##########################"
 sleep 2
 cd /home/$username/temp
 git clone https://github.com/midgetspy/Sick-Beard.git sickbeard
@@ -608,7 +627,6 @@ coming_eps_display_paused = 0
 coming_eps_sort = date
 EOF
 
-
 mv /home/castro/.sickbeard/config.ini /home/castro/.sickbeard/config.old
 cp /etc/default/sickbeard /home/castro/.sickbeard/config.ini
 chown $username /etc/init.d/sickbeard
@@ -620,9 +638,11 @@ sudo /etc/init.d/sickbeard stop
 sudo /etc/init.d/sickbeard start
 echo "sick beard is now running on $HOSTIP:$SICKPORT"
 
-echo "###########################"
-echo "# installling Couchpotato #"
-echo "###########################"
+
+
+echo "#############################"
+echo "## installling Couchpotato ##"
+echo "#############################"
 sleep 2
 cd /home/$username/temp
 git clone https://github.com/RuudBurger/CouchPotatoServer.git couchpotato
@@ -652,9 +672,10 @@ python /home/$username/.couchpotato/CouchPotato.py --daemon
 echo "CouchPotato has been started on port $COUCHPORT"
 
 
-echo "#########################"
-echo "# installing Headphones #"
-echo "#########################"
+
+echo "###########################"
+echo "## installing Headphones ##"
+echo "###########################"
 sleep 2
 cd /home/$username/temp
 git clone https://github.com/rembo10/headphones.git  headphones
@@ -858,9 +879,9 @@ echo "Headphones has started you can try http://$HOSTIP:$HEADPORT"
 
 
 
-echo "############################"
-echo "# installing Lazylibrarian #"
-echo "############################"
+echo "##############################"
+echo "## installing Lazylibrarian ##"
+echo "##############################"
 cd /home/$username/temp
 git clone https://github.com/Conjuro/LazyLibrarian.git lazylibrarian 
 cp /home/$username/temp/lazylibrarian /home/backups/lazylibrarian/
@@ -881,6 +902,7 @@ EOF
 cat < /home/$username/.pid/lazylibrarian.pid << EOF
 50005
 EOF
+
 chown $username /home/$username/.pid/lazylibrarian.pid
 chmod 777 /home/$username/.pid/lazylibrarian.pid
 chown $username /home/$username/.lazylibrarian
@@ -919,7 +941,7 @@ chmod 777 /home/$username/.gamez
 echo "########################"
 echo "# installing curlftpfs #"
 echo "########################"
-sleep 2
+sleep 1
 sudo apt-get install curlftpfs
 
 
@@ -935,7 +957,7 @@ echo "curlftpfs#$FTPUSER:$FTPPASS@$FTPHOST/$BOOKFTPDIR /home/books fuse auto,use
 echo "######################"
 echo "# add 1GB swap space #"
 echo "######################"
-sleep 2
+sleep 1
 sudo dd if=/dev/zero of=/swapfile bs=1024 count=1024k
 sudo mkswap /swapfile
 sudo swapon /swapfile
