@@ -96,10 +96,13 @@ MYLARPORT=7965
 GAMESPORT=7966
 
 #Transmission RPC Port (web ui)
-$TRANPORT=7977
+TRANPORT=7967
 
 #Transmission peer port
-$TRANPPORT=61724
+TRANPPORT=61724
+
+#Maraschino Web UI port
+MARAPORT=7968
 
 ##############################################################################################
 ##############DONT change anything beyond this point##########################################
@@ -171,19 +174,21 @@ ufw allow $SSHPORT
 echo "opening old ssh port just for now to make sure we dont lose our connetcion"
 ufw allow ssh
 echo "opening new Sab web UI port"
-sudo ufw allow $SABPORT
+ufw allow $SABPORT
 echo "opening new Sickbeard web UI port"
-sudo ufw allow $SICKPORT
+ufw allow $SICKPORT
 echo "opening new Couchpotato web UI port"
-sudo ufw allow $COUCHPORT
+ufw allow $COUCHPORT
 echo "opening new Headphones web UI port"
-sudo ufw allow $HEADPORT
+ufw allow $HEADPORT
 echo "opening new Lazy Librarian web UI port"
-sudo ufw allow $BOOKPORT
+ufw allow $BOOKPORT
 echo "opening new Squid Proxy server Port"
-sudo ufw allow $SQUIDPORT
+ufw allow $SQUIDPORT
 echo "opening new Transmission web UI Port"
-sudo ufw allow $TRANPORT
+ufw allow $TRANPORT
+echo "opening port for Maraschino"
+ufw allow $MARAPORT
 echo "editing sshd config"
 sed -i "s/port 22/port $sshport/" /etc/ssh/sshd_config
 sed -i "s/protocol 3,2/protocol 2/" /etc/ssh/sshd_config
@@ -876,6 +881,44 @@ chmod 777 /home/$username/.lazylibrarian
 chmod +x /etc/init.d/lazylibrarian  
 update-rc.d lazylibrarian  defaults
 echo "Lazy Librarian will start on nect boot you can access the ui via http://$HOSTIP:$BOOKPORT"
+
+
+
+echo "###########################"
+echo "## installing Maraschino ##"
+echo "###########################"
+cd /home/$username/temp
+git clone https://github.com/mrkipling/maraschino.git maraschino
+cp /home/$username/temp/maraschino /home/backups/maraschino/
+mv /home/$username/temp/maraschino  /home/$username/.maraschino
+cp /home/$username/maraschino/initd /etc/init.d/maraschino
+
+cat >/etc/default/maraschino << EOF
+# This file is sourced by /etc/init.d/maraschino
+#
+# When maraschino is started using the init script
+# is started under the account of $USER, as set below.
+#
+# Each setting is marked either "required" or "optional";
+# leaving any required setting unconfigured will cause
+# the service to not start.
+
+# [required] set path where maraschino is installed:
+APP_PATH=/home/$username/.maraschino
+
+# [optional] change to 1 to enable daemon
+ENABLE_DAEMON=1
+
+# [required] user or uid of account to run the program as:
+RUN_AS=$username
+
+# [optional] full path for the pidfile
+# otherwise, the default location /var/run/maraschino/maraschino.pid is used:
+PID_FILE=
+
+# [required] port to listen on (defaults to 7000)
+PORT=MARAPORT
+EOF
 
 
 
