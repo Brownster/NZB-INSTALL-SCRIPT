@@ -1,11 +1,5 @@
 NZB-INSTALL-SCRIPT
 ==================
-NOT FULLY FUNCTIONAL
-What is Working and checked with reboot
-
-Sabnzbdplus
-Headphones
-
 Install Script for a clean kvm vps install of ubuntu 12.04 Sabnzb, Transmision, Headphones, Sickbeard, Couchpotato, LazyLibrarian, Mylar, Gamez, Maraschino Fail2ban setup for ssh
 curlftps for mount points back to your local media
 UFW for easy firewall config
@@ -82,6 +76,11 @@ HEADPORT=7963
 
 BOOKPORT=7964
 
+GAMESPORT=7965
+
+MYLARPORT=7966
+
+MARAPORT=7967
 ######################
 
 After that save the file by typing :wq and press enter
