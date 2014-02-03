@@ -952,6 +952,8 @@ echo "curlftpfs#$FTPUSER:$FTPPASS@$FTPHOST/$FILMFTPDIR /home/media/films fuse au
 echo "curlftpfs#$FTPUSER:$FTPPASS@$FTPHOST/$TVFTPDIR /home/media/tv fuse auto,user,uid=1000,allow_other,_netdev 0 0" >> /etc/fstab
 echo "curlftpfs#$FTPUSER:$FTPPASS@$FTPHOST/$MUSICFTPDIR /home/media/music fuse auto,user,uid=1000,allow_other,_netdev 0 0" >> /etc/fstab
 echo "curlftpfs#$FTPUSER:$FTPPASS@$FTPHOST/$BOOKFTPDIR /home/books fuse auto,user,uid=1000,allow_other,_netdev 0 0" >> /etc/fstab
+echo "curlftpfs#$FTPUSER:$FTPPASS@$FTPHOST/$GAMEFTPDIR /home/games fuse auto,user,uid=1000,allow_other,_netdev 0 0" >> /etc/fstab
+echo "curlftpfs#$FTPUSER:$FTPPASS@$FTPHOST/$MYLARFTPDIR /home/mylar fuse auto,user,uid=1000,allow_other,_netdev 0 0" >> /etc/fstab
 
 
 echo "######################"
@@ -972,7 +974,7 @@ echo "Thats it i am done lets check how well we did we will reboot"
 echo "then go to your web browser and see if you van get to the web apps"
 echo " also try adding you vps ip and proxy port into you web browser proxy" 
 echo "settings then go to whatismyip you ip address should show as that of your"
-echo "proxy..enjoy hopefully ;-)
+echo "proxy..enjoy hopefully ;-)"
 sleep 10
 ufw deny 22
 shutdown -r now
