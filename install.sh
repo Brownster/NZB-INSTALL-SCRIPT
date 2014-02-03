@@ -81,7 +81,7 @@ BOOKPORT=7964
 MYLARPORT=7964
 
 #Gamez Please enter the port for web access
-GAMEPORT=7964
+GAMEZPORT=7964
 
 ##############################################################################################
 ##############DONT change anything beyond this point##########################################
@@ -156,7 +156,7 @@ echo "editing sshd config"
 sed -i "s/port 22/port $sshport/" /etc/ssh/sshd_config
 sed -i "s/protocol 3,2/protocol 2/" /etc/ssh/sshd_config
 sed -i "s/PermitRootLogin yes/PermitRootLogin no/" /etc/ssh/sshd_config
-#sed -i "s/DebianBanner yes/DebianBanner no/" /etc/ssh/sshd_config
+sed -i "s/DebianBanner yes/DebianBanner no/" /etc/ssh/sshd_config
 echo "restarting ssh"
 sleep 2
 /etc/init.d/ssh restart -y
@@ -231,28 +231,26 @@ net.ipv6.conf.default.accept_redirects = 0
 # Ignore Directed pings
 net.ipv4.icmp_echo_ignore_all = 1
 EOF
+
 sysctl -p
+
 
 echo "#######################"
 echo "# installing fail2ban #"
 echo "#######################"
-sleep 3
+sleep 2
 sudo apt-get install fail2ban -y
 echo "setting up fail2ban"
-sleep 2
 sed -i 's/enabled = false/enabled = true/' /etc/fail2ban/jail.conf
 sed -i 's/port = sshd/port = $SSHPORT/' /etc/fail2ban/jail.conf
 sed -i 's/port = sshd/port = $SSHPORT/' /etc/fail2ban/jail.conf
 sed -i 's/maxretry = 5/maxretry = 3/' /etc/fail2ban/jail.conf
-echo "###########################################"
-echo "#fail2ban installed and configured for ssh#"
-echo "###########################################"
-sleep 3
+
 
 echo "###############################"
 echo "#installing squid proxy server#"
 echo "###############################"
-sleep 3
+sleep 2
 sudo apt-get install squid3 squid3-common -y
 
 cat > /etc/squid3/squid.conf << EOF
@@ -296,20 +294,17 @@ sudo echo "" >> /etc/squid3/squid_passwd
 sudo touch /etc/squid3/squid_passwd
 sudo chmod 777 /etc/squid3/squid_passwd
 sudo htpasswd -b -c /etc/squid3/squid_user $SQUIDUSER $SQUIDPASS
-echo "######################"
-echo "#starting Squid Proxy#"
-echo "######################"
-sleep 2
+service squid3 stop
 service squid3 start
 echo "####################################"
 echo "# squid started on port $SQUIDPORT #"
 echo "####################################"
-sleep 3
+
 
 echo "########################"
 echo "# creating Diretcories #"
 echo "########################"
-sleep 2
+sleep 1
 mkdir /home/$username/.pid/
 mkdir /home/$username/temp
 mkdir /home/downloads
@@ -346,11 +341,10 @@ apt-get install python-cheetah -y
 echo "######################"
 echo "# installing sabnzbd #"
 echo "######################"
-sleep 3
+sleep 2
 apt-get install sabnzbdplus -y
 mv /etc/default/sabnzbdplus /home/backups/sabnzbd/sabnzbdplus.orig
 echo "change sab config"
-sleep 2
 
 cat > /etc/default/sabnzbdplus << EOF
 USER=$username
@@ -367,10 +361,10 @@ echo "sabnzbdplus is now running on $HOSTIP:$SABPORT"
 echo "########################"
 echo "# installing sickbeard "
 echo "########################"
+sleep 2
 cd /home/$username/temp
 git clone https://github.com/midgetspy/Sick-Beard.git sickbeard
 echo "backing up sickbeard"
-sleep 2
 cp sickbeard /home/backups/sickbeard
 mv sickbeard /home/$username/.sickbeard
 #cp /home/$username/.sickbeard/config.ini /etc/default/sickbeard
@@ -632,7 +626,7 @@ echo "sick beard is now running on $HOSTIP:$SICKPORT"
 echo "###########################"
 echo "# installling Couchpotato #"
 echo "###########################"
-sleep 3
+sleep 2
 cd /home/$username/temp
 git clone https://github.com/RuudBurger/CouchPotatoServer.git couchpotato
 cp couchpotato /home/$username/backups/couchpotato
@@ -663,7 +657,7 @@ echo "CouchPotato has been started on port $COUCHPORT"
 echo "#########################"
 echo "# installing Headphones #"
 echo "#########################"
-sleep 1
+sleep 2
 cd /home/$username/temp
 git clone https://github.com/rembo10/headphones.git  headphones
 cp /home/$username/temp/headphones /home/backups/headphones/
@@ -884,25 +878,35 @@ PORT=$BOOKPORT
 PID_FILE=/home/$username/.pid/lazylibrarian.pid
 EOF
 
+cat < /home/$username/.pid/lazylibrarian.pid << EOF
+50005
+EOF
+chown $username /home/$username/.pid/lazylibrarian.pid
+chmod 777 /home/$username/.pid/lazylibrarian.pid
 chown $username /home/$username/.lazylibrarian
 chmod 777 /home/$username/.lazylibrarian
 chmod +x /etc/init.d/lazylibrarian  
 update-rc.d lazylibrarian  defaults
 echo "Lazy Librarian will start on nect boot you can access the ui via http://$HOSTIP:$BOOKPORT"
-sleep 2
+
 
 echo "installing mylar"
+sleep 1
 cd /home/$username/temp
 git clone https://github.com/evilhero/mylar.git mylar
 cp /home/$username/temp/mylar /home/backups/mylar/
 mv /home/$username/temp/mylar  /home/$username/.mylar 
+chown $username /home/$username/.mylar/
+chmod 777 /home/$username/.mylar
 
 echo "installing gamez"
+sleep 1
 cd /home/$username/temp
 git clone https://github.com/mdlesk/Gamez.git gamez
 cp /home/$username/temp/gamez /home/backups/gamez/
 mv /home/$username/temp/gamez  /home/$username/.gamez
-
+chown $username /home/$username/.gamez/
+chmod 777 /home/$username/.gamez
 
 echo "########################"
 echo "# installing curlftpfs #"
@@ -928,9 +932,9 @@ sudo swapon /swapfile
 echo "/swapfile       none    swap    sw      0       0" >> /etc/fstab
 echo 0 | sudo tee /proc/sys/vm/swappiness
 echo vm.swappiness = 0 | sudo tee -a /etc/sysctl.conf
-echo "mounting ftp locations"
-sleep 2
-sudo mount -a
+
+#echo "mounting ftp locations"
+#sudo mount -a
 echo "Thats it i am done lets check how well we did we will reboot"
 echo "then go to your web browser and see if you van get to the web apps"
 echo " also try adding you vps ip and proxy port into you web browser proxy" 
