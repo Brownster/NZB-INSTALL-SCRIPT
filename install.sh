@@ -631,7 +631,7 @@ cat > /home/castro/.pid/couchpotato.pid << EOF
 EOF
 
 chmod +x /etc/init.d/couchpotato
-sudo update-rc.d couchpotato defaults
+update-rc.d couchpotato defaults
 chmod 777 /home/$username/.couchpotato/
 echo "starting couchpotato"
 python /home/$username/.couchpotato/CouchPotato.py --daemon
@@ -783,8 +783,8 @@ utorrent_username = ""
 utorrent_password = ""
 [Newznab]
 newznab = 1
-newznab_host = http://$HOSTIP/
-newznab_apikey = 01e7a9d89a824bda0a4d5b37cbeb8f51
+newznab_host = http://
+newznab_apikey = 
 newznab_enabled = 1
 extra_newznabs = 
 [NZBsorg]
