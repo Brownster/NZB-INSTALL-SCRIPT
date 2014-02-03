@@ -86,6 +86,9 @@ GAMEZPORT=7966
 #Transmission RPC Port
 $TRANPORT=7977
 
+#Transmission start port
+$TRANPPORT=61724
+
 ##############################################################################################
 ##############DONT change anything beyond this point##########################################
 ##############################################################################################
@@ -924,7 +927,7 @@ cat > /etc/transmission-daemon/settings.json << EOF
  "peer-congestion-algorithm": "",
  "peer-limit-global": 240,
  "peer-limit-per-torrent": 60,
- "peer-port": 51413,
+ "peer-port": $TRANPPORT,
  "peer-port-random-high": 65535,
  "peer-port-random-low": 49152,
  "peer-port-random-on-start": false,
