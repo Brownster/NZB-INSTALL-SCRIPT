@@ -92,3 +92,6 @@ then run the script by typing:
 You will be prompted for a new username and password this script will create a user to stop havingto use root.
 
 You will also be prompted to confirm a couple of steps but apart form that it will take care of the rest. I also recommend you set up the local ftp shares before you start so when we mount the ftp shares it works and doesnt hang for 10 mins
+
+
+<a href="https://clientarea.ramnode.com/aff.php?aff=838"><img src="http://www.ramnode.com/images/banners/affbannerdark.png" alt="high performance ssd vps" /></a>
