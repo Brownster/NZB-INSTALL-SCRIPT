@@ -296,9 +296,8 @@ sudo chmod 777 /etc/squid3/squid_passwd
 sudo htpasswd -b -c /etc/squid3/squid_user $SQUIDUSER $SQUIDPASS
 service squid3 stop
 service squid3 start
-echo "####################################"
-echo "# squid started on port $SQUIDPORT #"
-echo "####################################"
+echo "squid started on port $SQUIDPORT #"
+
 
 
 echo "########################"
@@ -654,6 +653,7 @@ echo "starting couchpotato"
 python /home/$username/.couchpotato/CouchPotato.py --daemon
 echo "CouchPotato has been started on port $COUCHPORT"
 
+
 echo "#########################"
 echo "# installing Headphones #"
 echo "#########################"
@@ -858,6 +858,8 @@ echo "starting Headphones on port $HEADPORT"
 python /home/$username/.headphones/Headphones.py --daemon
 echo "Headphones has started you can try http://$HOSTIP:$HEADPORT"
 
+
+
 echo "############################"
 echo "# installing Lazylibrarian #"
 echo "############################"
@@ -890,7 +892,10 @@ update-rc.d lazylibrarian  defaults
 echo "Lazy Librarian will start on nect boot you can access the ui via http://$HOSTIP:$BOOKPORT"
 
 
-echo "installing mylar"
+
+echo "#######################"
+echo "## downloading mylar ##"
+echo "#######################"
 sleep 1
 cd /home/$username/temp
 git clone https://github.com/evilhero/mylar.git mylar
@@ -899,7 +904,11 @@ mv /home/$username/temp/mylar  /home/$username/.mylar
 chown $username /home/$username/.mylar/
 chmod 777 /home/$username/.mylar
 
-echo "installing gamez"
+
+
+echo "#######################"
+echo "## downloading gamez ##"
+echo "#######################"
 sleep 1
 cd /home/$username/temp
 git clone https://github.com/mdlesk/Gamez.git gamez
@@ -908,11 +917,13 @@ mv /home/$username/temp/gamez  /home/$username/.gamez
 chown $username /home/$username/.gamez/
 chmod 777 /home/$username/.gamez
 
+
 echo "########################"
 echo "# installing curlftpfs #"
 echo "########################"
 sleep 2
 sudo apt-get install curlftpfs
+
 
 echo "########################"
 echo "#   add mount points   #"
@@ -921,6 +932,7 @@ echo "curlftpfs#$FTPUSER:$FTPPASS@$FTPHOST/$FILMFTPDIR /home/media/films fuse au
 echo "curlftpfs#$FTPUSER:$FTPPASS@$FTPHOST/$TVFTPDIR /home/media/tv fuse auto,user,uid=1000,allow_other,_netdev 0 0" >> /etc/fstab
 echo "curlftpfs#$FTPUSER:$FTPPASS@$FTPHOST/$MUSICFTPDIR /home/media/music fuse auto,user,uid=1000,allow_other,_netdev 0 0" >> /etc/fstab
 echo "curlftpfs#$FTPUSER:$FTPPASS@$FTPHOST/$BOOKFTPDIR /home/books fuse auto,user,uid=1000,allow_other,_netdev 0 0" >> /etc/fstab
+
 
 echo "######################"
 echo "# add 1GB swap space #"
@@ -932,6 +944,7 @@ sudo swapon /swapfile
 echo "/swapfile       none    swap    sw      0       0" >> /etc/fstab
 echo 0 | sudo tee /proc/sys/vm/swappiness
 echo vm.swappiness = 0 | sudo tee -a /etc/sysctl.conf
+
 
 #echo "mounting ftp locations"
 #sudo mount -a
