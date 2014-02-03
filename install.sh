@@ -51,13 +51,13 @@ BOOKSFTPDIR=ebooks
 GAMESFTPDIR=games
 
 #Books ftp location
-MYLARFTPDIR=mylar
+COMICSFTPDIR=comics
 
 #games mount location
 GAMESMNTDIR=/home/media/games
 
 #comics mount location
-MYLARMNTDIR=/home/media/mylar
+COMICSMNTDIR=/home/media/comics
 
 #films mount location
 FILMMNTDIR=/home/media/films
@@ -370,8 +370,8 @@ mkdir /home/backups/couchpotato
 mkdir /home/backups/headphones
 mkdir /home/backups/lazylibrarian
 mkdir /home/backups/sabnzbd
-mkdir /home/backups/mylar
-mkdir /home/backups/gamez
+mkdir /home/backups/comics
+mkdir /home/backups/games
 chown $username /home/*/*/
 chmod 777  /home/*/*
 
@@ -917,10 +917,14 @@ RUN_AS=$username
 PID_FILE=
 
 # [required] port to listen on (defaults to 7000)
-PORT=MARAPORT
+PORT=$MARAPORT
 EOF
 
-
+chmod a+x /etc/init.d/maraschino
+update-rc.d maraschino defaults
+chown $username /home/$username/.maraschino/
+chmod 777 /home/$username/.maraschino/
+/etc/init.d/maraschino start
 
 echo "#######################"
 echo "## downloading mylar ##"
@@ -1035,9 +1039,9 @@ echo "########################"
 echo "curlftpfs#$FTPUSER:$FTPPASS@$FTPHOST/$FILMFTPDIR /home/media/films fuse auto,user,uid=1000,allow_other,_netdev 0 0" >> /etc/fstab
 echo "curlftpfs#$FTPUSER:$FTPPASS@$FTPHOST/$TVFTPDIR /home/media/tv fuse auto,user,uid=1000,allow_other,_netdev 0 0" >> /etc/fstab
 echo "curlftpfs#$FTPUSER:$FTPPASS@$FTPHOST/$MUSICFTPDIR /home/media/music fuse auto,user,uid=1000,allow_other,_netdev 0 0" >> /etc/fstab
-echo "curlftpfs#$FTPUSER:$FTPPASS@$FTPHOST/$BOOKFTPDIR /home/books fuse auto,user,uid=1000,allow_other,_netdev 0 0" >> /etc/fstab
-echo "curlftpfs#$FTPUSER:$FTPPASS@$FTPHOST/$GAMEFTPDIR /home/games fuse auto,user,uid=1000,allow_other,_netdev 0 0" >> /etc/fstab
-echo "curlftpfs#$FTPUSER:$FTPPASS@$FTPHOST/$MYLARFTPDIR /home/mylar fuse auto,user,uid=1000,allow_other,_netdev 0 0" >> /etc/fstab
+echo "curlftpfs#$FTPUSER:$FTPPASS@$FTPHOST/$BOOKFTPDIR /home/media/books fuse auto,user,uid=1000,allow_other,_netdev 0 0" >> /etc/fstab
+echo "curlftpfs#$FTPUSER:$FTPPASS@$FTPHOST/$GAMEFTPDIR /home/media/games fuse auto,user,uid=1000,allow_other,_netdev 0 0" >> /etc/fstab
+echo "curlftpfs#$FTPUSER:$FTPPASS@$FTPHOST/$COMICSFTPDIR /home/media/comics fuse auto,user,uid=1000,allow_other,_netdev 0 0" >> /etc/fstab
 
 
 echo "######################"
