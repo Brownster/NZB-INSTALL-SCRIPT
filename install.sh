@@ -1,16 +1,16 @@
 #! /bin/bash
-#by Brownster - use at your own risk
-######################SETTINGS to be filled in####################################################
+##################  by Brownster - use at your own risk ############################################ 
+###################### SETTINGS to be filled in ####################################################
 
-#MUST CHANGE THESE SETTINGS
+## MUST CHANGE THESE SETTINGS !! ##
 
 #DYNDNS / noip host name that resolves into your vps ip address
 DYNDNS=someplace.dydns-remote.com
 
-#Please enter a user name for accessing all the web apps
+#Please enter a user name for accessing sickbeard, couchpotato ect
 WEBUSER=webuser
 
-#Please enter a password for accessing all the web apps
+#Please enter a password for accessing all the web apps sickbeard, couchpotato ect
 WEBPASS=webpass
 
 #Please enter a Username for Squid Proxy Server
@@ -72,7 +72,7 @@ MUSICMNTDIR=/home/media/music
 BOOKSMNTDIR=/home/media/books
 
 
-#OPTIONAL TO CHANGE BELOW BUT RECOMMENDED
+## OPTIONAL TO CHANGE BELOW BUT RECOMMENDED ##
 
 #SABNZB Please enter the port for web access
 SABPORT=7960
@@ -105,10 +105,10 @@ TRANPPORT=61724
 MARAPORT=7979
 
 ##############################################################################################
-##############DONT change anything beyond this point##########################################
+############## DO NOT MAKE ANY CHANGES BEYOND THIS POINT #####################################
 ##############################################################################################
 
-################################start of script###############################################
+################################ start of scrip t#############################################
 
 echo "******************************************************************************************"
 echo "******************************************************************************************"
@@ -127,10 +127,11 @@ echo "**************************************************************************
 echo "******************************************************************************************"
 echo "******************************************************************************************"
 sleep 5
+add-apt-repository ppa:jcfp/ppa
 add-apt-repository ppa:transmissionbt/ppa
 apt-get update
 HOSTIP=`ifconfig|xargs|awk '{print $7}'|sed -e 's/[a-z]*:/''/'`
-echo "i will be using: $HOSTIP"
+echo "i will be using: $HOSTIP as the WAN address"
 
 echo "#######################"
 echo "## create a new user ##"
@@ -189,7 +190,7 @@ echo "opening new Transmission web UI Port"
 ufw allow $TRANPORT
 echo "opening port for Maraschino"
 ufw allow $MARAPORT
-echo "nZEDb web port
+echo "nZEDb web port"
 ufw allow 80
 echo "editing sshd config"
 sed -i "s/port 22/port $sshport/" /etc/ssh/sshd_config
@@ -375,8 +376,8 @@ mkdir /home/backups/sabnzbd
 mkdir /home/backups/comics
 mkdir /home/backups/games
 chown $username /home/*/*/
+chown $username /home/*/*/*
 chmod 777  /home/*/*
-
 
 
 
