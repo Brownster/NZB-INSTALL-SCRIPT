@@ -131,8 +131,26 @@ add-apt-repository ppa:jcfp/ppa
 add-apt-repository ppa:transmissionbt/ppa
 apt-get update
 HOSTIP=`ifconfig|xargs|awk '{print $7}'|sed -e 's/[a-z]*:/''/'`
-echo "i will be using: $HOSTIP as the WAN address"
+#echo "i will be using: $HOSTIP as the WAN address"
 
+while :
+do
+ clear
+ echo "   M A I N - M E N U"
+ echo "1. Install Sabnzbdplus"
+ echo "2. Install Couchpotato"
+ echo "3. Install Sickbeard"
+ echo "4. Install Lazy Librarian"
+ echo "5. Install Gamez
+ echo "6. Install Mylar"
+ echo "7. Install squid Proxy"
+ echo "8.  RUN FIRST Harden VPS create new non root user (see read me) - RUN FIRST"
+ echo "9. I am scared get me out of here (exit)"
+ echo -n "Please enter option [1 - 9]"
+ read opt
+ case $opt in
+
+8)
 echo "#######################"
 echo "## create a new user ##"
 echo "#######################"
